@@ -1,4 +1,4 @@
-package com.ktds.IaCOps.api.git.auth;
+package com.ktds.IaCOps.api.git.pull;
 
 public class Example {
 

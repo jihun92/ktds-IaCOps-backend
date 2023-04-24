@@ -1,4 +1,4 @@
-package com.ktds.IaCOps.api.git.auth;
+package com.ktds.IaCOps.api.git.diff;
 
 public class Example {
 
