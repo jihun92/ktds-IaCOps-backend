@@ -2,6 +2,7 @@ package com.ktds.IaCOps.iacengine.ansible.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.ktds.IaCOps.common.cli.CliService;
@@ -11,12 +12,15 @@ public class AnsibleService {
 
 	private String playbookName;
 	private List<String> targetHost;
+	
+	@Value("${ansible.playbook_path}")
+	private String playbookPath;
 
 	CliService cli = new CliService();
 
-	public void runPlaybook() {
-		String runCommand = "ansible-playbook"+"/ansible/playbook/"+playbookName+"-i hosts"+targetHost;
-		cli.runCommand(runCommand);
+	public List<String> runPlaybook() {
+		String runCommand = "ansible-playbook "+playbookPath+playbookName+" -i "+String.join(" ", this.targetHost);
+		return cli.runCommand(runCommand);
 	}
 
 	public void selectPlaybook(String playbookName) {

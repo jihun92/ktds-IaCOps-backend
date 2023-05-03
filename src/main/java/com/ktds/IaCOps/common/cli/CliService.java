@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -26,7 +27,8 @@ public class CliService {
 			}
 
 		} catch (IOException e) {
-			return null;
+			// [] 으로 return 되어 수정 필요
+			return Arrays.asList(e.toString());
 		}
 
 		return output;

@@ -7,17 +7,22 @@ server:
 # 기본 프로파일은 local
 spring:
   profiles:
-    active: lcoal
+    active: local
     
-# dev 프로파일
+# local 프로파일
 ---
 spring:
   profiles: local
 
-git:
-  url: jdbc:mysql://localhost:3306/devdb
-  username: localuser
-  password: localpass
+vcs:
+  git:
+    url: jdbc:mysql://localhost:3306/devdb
+    username: localuser
+    password: localpass
+
+ansible:
+  playbook_path: /Users/kimjihun/Documents/ansible/playbook/
+
   
 # dev 프로파일
 ---
@@ -28,6 +33,9 @@ git:
   url: jdbc:mysql://localhost:3306/devdb
   username: devuser
   password: devpass
+
+ansible:
+  playbook_path: /home/centos/ansible/playbook/
 
 # prod 프로파일
 ---
