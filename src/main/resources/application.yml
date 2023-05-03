@@ -9,7 +9,6 @@ spring:
   profiles:
     active: lcoal
     
-    
 # dev 프로파일
 ---
 spring:
