@@ -1,0 +1,41 @@
+# application.yml
+
+# 공통 설정
+server:
+  port: 8080
+
+# 기본 프로파일은 local
+spring:
+  profiles:
+    active: lcoal
+    
+    
+# dev 프로파일
+---
+spring:
+  profiles: local
+
+git:
+  url: jdbc:mysql://localhost:3306/devdb
+  username: localuser
+  password: localpass
+  
+# dev 프로파일
+---
+spring:
+  profiles: dev
+  
+git:
+  url: jdbc:mysql://localhost:3306/devdb
+  username: devuser
+  password: devpass
+
+# prod 프로파일
+---
+spring:
+  profiles: prod
+  
+git:
+  url: jdbc:mysql://localhost:3306/proddb
+  username: produser
+  password: prodpass
