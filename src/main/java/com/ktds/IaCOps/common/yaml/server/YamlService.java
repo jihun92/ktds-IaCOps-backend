@@ -9,39 +9,41 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.stereotype.Service;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
+@Service
 public class YamlService {
-	
+
 	public Map<String, Object> readYaml(String filePath, String fileName) {
 
 		InputStream inputStream = null;
-		
+
 		try {
 			inputStream = new FileInputStream(new File(filePath+fileName));
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		
+
 		Yaml yaml = new Yaml();
 		Map<String, Object> yamlData = yaml.load(inputStream);
 		return yamlData;
-		
+
 	}
-	
+
 	public void writeYaml(String filePath, String fileName, String key, Object value, Map<String, Object> yamlData) {
-	    
+
 		setValueFromNestedMap(yamlData, value, key.split("\\."));
-	    
+
 		PrintWriter writer = null;
 	    try {
 	        writer = new PrintWriter(new File(filePath + fileName));
 	    } catch (FileNotFoundException e) {
 	        e.printStackTrace();
 	    }
-	    
+
 	    DumperOptions options = new DumperOptions();
 	    options.setIndent(2);
 	    options.setPrettyFlow(true);
@@ -49,7 +51,7 @@ public class YamlService {
 	    Yaml yaml = new Yaml(options);
 	    yaml.dump(yamlData, writer);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public Object getValueFromNestedMap(Map<String, Object> map, String... keys) {
 	    Object value = map;
@@ -61,7 +63,7 @@ public class YamlService {
 	    }
 	    return value;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public Map<String, Object> setValueFromNestedMap(Map<String, Object> map, Object value, String... keys) {
 	    if (keys.length == 1) {
@@ -74,9 +76,9 @@ public class YamlService {
 	        map.put(keys[0], nestedMap);
 	    }
 	    setValueFromNestedMap(nestedMap, value, Arrays.copyOfRange(keys, 1, keys.length));
-	   
+
 	   return nestedMap;
-	 	    
+
 	}
 
 }
