@@ -1,0 +1,3 @@
+[remote "origin"]
+	url = https://gitlab.iacops.site/gitlab-instance-d4e213ae/Monitoring.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
