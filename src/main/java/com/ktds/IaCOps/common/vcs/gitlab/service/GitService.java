@@ -15,10 +15,7 @@ import java.util.Scanner;
 import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
-import java.net.URISyntaxException;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.ResetCommand.ResetType;
@@ -27,23 +24,25 @@ import org.eclipse.jgit.transport.PushResult;
 import org.eclipse.jgit.transport.RemoteRefUpdate;
 import org.eclipse.jgit.transport.URIish;
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.io.File;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
+import org.springframework.beans.factory.annotation.Value;
+
 
 
 @Service
 public class GitService {
-
-	String gitlabUrl = "https://gitlab.iacops.site/gitlab-instance-d4e213ae/Monitoring.git";
-	String userName = "root";
-	String password = "new1234!";
-	String localPath = "/Users/seungmi/Desktop/Monitoring";
-	String strmasterRef = "refs/remotes/origin/master";
+	@Value("${vcs.gitlab.url}")
+	private String gitlabUrl;
+	@Value("${vcs.gitlab.username}")
+	private String userName;
+	@Value("${vcs.gitlab.password}")
+	private String password;
+	@Value("${vcs.gitlab.localpath}")
+	private String localPath;
+	@Value("${vcs.gitlab.strmasterref}")
+	private String strmasterRef;
 
 	//clone
 	public String clone() {
@@ -165,7 +164,7 @@ public class GitService {
 		return result;
     }
 
-	// local reset (local repository를 이전 버전으로 돌리는 것) 
+	// localReset
 	public String localReset(String commitId) {
 		String result = "";
 		try(Repository repo = new FileRepositoryBuilder().setGitDir(new File(localPath + "/.git")).build()){
@@ -183,7 +182,7 @@ public class GitService {
 					.setRef(commitObjectId.getName())
 					.call();
 
-			result = "Reset successful to commit: " + commitId;
+			result = "Local Repository Reset successful to commit: " + commitId;
 			return result;
 		} catch (Exception e) {
 			result = "Error occurred while resetting repository: " + e.getMessage();
@@ -191,65 +190,55 @@ public class GitService {
 		return result;
 	}
 
-	// remote reset (remote repository를 이전버전으로 돌리는 것)
-	public String remoteReset(String commitId) {
+    // localRevert
+    public String localRevert(String commitId) {
 		String result = "";
-		try (Repository repo = Git.open(new File(localPath)).getRepository()) {
+		try(Repository repo = new FileRepositoryBuilder().setGitDir(new File(localPath + "/.git")).build()){
 			Git git = new Git(repo);
-			git.remoteAdd().setName("origin").setUri(new URIish(gitlabUrl)).call();
-			//git.fetch().setRemote("origin").call();
-			RevertCommand revert = git.revert().include(repo.resolve(commitId));
-			revert.call();
-
-		}catch (Exception e) {
-			result = "Error occurred while resetting repository: " + e.getMessage();
-		}
+			ObjectId commitObjectId = repo.resolve(commitId);
+			// check commit id
+			if (commitObjectId == null) {
+				System.out.println("Commit ID not found.");
+				return null;	
+			}
+            git.revert().include(commitObjectId).call();
+            result = "Local Repository Revert successful to commit:" + commitId;
+			return result;
+        } catch (GitAPIException | IOException e) {
+            e.printStackTrace();
+            result = "Error occurred while reverting local repository." + e.getMessage();
+        }
 		return result;
 	}
 
-
-
-
-	public static void main(String[] args) {
-		GitService repo = new GitService();
-		String commitMessage;
-		String filePattern = ".";
-		// 돌아가고싶은 commitid
-		String commitId = "2d1f5a2a210b9eb7a4c04a7dab025372f1f813c2";
-
-		//clone
-		//String clone = repo.clone();
-		//System.out.println(clone);
-
-		//pull
-		//String pull = repo.pull();
-		//System.out.println(pull);
-
-		//add
-		// String add = repo.add(filePattern);
-		// System.out.println(add);
-
-		//commit
-		// Scanner sc = new Scanner(System.in);
-		// System.out.println("commit message를 입력하세요.");
-		// commitMessage = sc.nextLine();
-		// String commit = repo.commit(commitMessage);
-		// System.out.println(commit);
-
-		//push
-		// String push = repo.push();
-		// System.out.println(push);
-
-		// local reset
-		//String localReset = repo.localReset(commitId);
-		//System.out.println(localReset);
-
-		// remote reset
-		String remoteReset = repo.remoteReset(commitId);
-		System.out.println(remoteReset);
-
-
-
-	}
+    // remoteReset
+    public String remoteReset(String commitId) {
+		String result = "";
+		try (Git git = Git.cloneRepository().setURI(gitlabUrl).call()) {
+			// Reset to the specified commit
+			git.reset().setRef(commitId).call();
+			// Push the reset to the remote repository
+			git.push().setRemote(gitlabUrl).call();
+			result = "Remote repository reset to commit " + commitId;
+			return result;
+		} catch (GitAPIException e) {
+			e.printStackTrace();
+			result = e.getMessage();
+		}
+		return result;
+    }
+	// remoteRevert
+	public String remoteRevert(Ref commitId) {
+		Git git = null;
+        try  {
+			git = Git.open(new File(gitlabUrl));
+			git.revert().include(commitId).call();
+			git.push().setRemote(gitlabUrl).setPushAll().call();
+            return "Remote repository has been revert.";
+        } catch (GitAPIException | IOException e) {
+            e.printStackTrace();
+            return "Error occurred while revertting remote repository." + e.getMessage();
+        }
+    }
 
 }
