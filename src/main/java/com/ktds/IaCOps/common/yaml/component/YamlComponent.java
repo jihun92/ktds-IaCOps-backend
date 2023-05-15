@@ -1,4 +1,4 @@
-package com.ktds.IaCOps.common.yaml.server;
+package com.ktds.IaCOps.common.yaml.component;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,12 +9,12 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
-@Service
-public class YamlService {
+@Component
+public class YamlComponent {
 
 	public Map<String, Object> readYaml(String filePath, String fileName) {
 
