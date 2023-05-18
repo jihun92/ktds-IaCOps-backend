@@ -1,21 +1,17 @@
 package com.ktds.IaCOps;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-import java.util.Arrays;
-import java.util.List;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.ktds.IaCOps.common.vcs.gitlab.service.GitService;
+import com.ktds.IaCOps.common.vcs.gitlab.component.GitComponent;
+
 
 @SpringBootTest
-class GitServiceTest {
+class GitComponentTest {
 
 	@Autowired
-	private GitService GitService;
+	private GitComponent gitComponent;
 
 	@Test
 	void contextLoads() {
@@ -52,9 +48,9 @@ class GitServiceTest {
 		// System.out.println(localReset);
 
 		//localRevert & push
-		String localRevert = GitService.localRevert(commitId);
+		String localRevert = gitComponent.localRevert(commitId);
 		System.out.println(localRevert);
-		String push = GitService.push();
+		String push = gitComponent.push();
 		System.out.println(push);
 		
 
