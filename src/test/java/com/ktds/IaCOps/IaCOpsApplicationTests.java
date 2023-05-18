@@ -9,13 +9,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.ktds.IaCOps.iacengine.ansible.service.AnsibleService;
+import com.ktds.IaCOps.iacengine.ansible.component.AnsibleComponent;
+
 
 @SpringBootTest
 class IaCOpsApplicationTests {
 
 	@Autowired
-	private AnsibleService ansibleService;
+	private AnsibleComponent ansibleComponent;
 
 	@Test
 	void contextLoads() {

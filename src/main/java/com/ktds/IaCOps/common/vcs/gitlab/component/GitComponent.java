@@ -1,4 +1,4 @@
-package com.ktds.IaCOps.common.vcs.gitlab.service;
+package com.ktds.IaCOps.common.vcs.gitlab.component;
 
 import java.io.File;
 import java.io.IOException;
