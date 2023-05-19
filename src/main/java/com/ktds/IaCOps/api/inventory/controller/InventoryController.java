@@ -2,6 +2,8 @@ package com.ktds.IaCOps.api.inventory.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,15 +19,20 @@ import com.ktds.IaCOps.common.response.ApiResponse;
 @RequestMapping("/api")
 public class InventoryController {
 
+    private static final Logger logger = LoggerFactory.getLogger(InventoryController.class);
+
     @Autowired
     InventoryService inventoryService;
 
     @GetMapping("/inventories")
     public ResponseEntity<ApiResponse<List<Inventory>>> getAllInventory() {
+        
         try {
             List<Inventory> inventories = inventoryService.getAllInventory();
-            return new ResponseEntity<>(new ApiResponse<>(HttpStatus.OK.value(), "success", inventories), HttpStatus.OK);
+            ResponseEntity<ApiResponse<List<Inventory>>> response = new ResponseEntity<>(new ApiResponse<>(HttpStatus.OK.value(), "success", inventories), HttpStatus.OK);
+            return response;
         } catch (Exception e) {
+            logger.info("Error Get All inventories");
             return new ResponseEntity<>(new ApiResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Error", null), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
