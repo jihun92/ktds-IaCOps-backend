@@ -1,4 +1,4 @@
-package com.ktds.IaCOps.common;
+package com.ktds.IaCOps.common.parsing.json.component;
 
 import java.io.IOException;
 import java.nio.file.Files;

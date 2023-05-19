@@ -1,4 +1,4 @@
-package com.ktds.IaCOps.common.yaml.component;
+package com.ktds.IaCOps.common.parsing.yaml.component;
 
 import java.io.File;
 import java.io.FileInputStream;

@@ -10,9 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.ktds.IaCOps.common.JsonComponent;
 import com.ktds.IaCOps.common.inventory.model.Inventory;
-import com.ktds.IaCOps.common.yaml.component.YamlComponent;
+import com.ktds.IaCOps.common.parsing.json.component.JsonComponent;
+import com.ktds.IaCOps.common.parsing.yaml.component.YamlComponent;
 
 import lombok.extern.slf4j.Slf4j;
 
