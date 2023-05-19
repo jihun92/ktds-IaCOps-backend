@@ -32,7 +32,7 @@ public class InventoryComponent {
     @Value("${filePath.infra_code.infra_config.inventory_infofile}")
     private String inventoryInfofile;
 
-    public List<Inventory> getInventoryAllList() {
+    public List<Inventory> getAllInventory() {
 
         String jsonString;
         try {

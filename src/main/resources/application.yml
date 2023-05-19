@@ -25,6 +25,15 @@ vcs:
 ansible:
   playbook_path: /Users/kimjihun/Documents/ansible/playbook/
 
+filePath:
+  base: /Users/kimjihun/Documents/git/iacops-project-main/
+  infra_code:
+    infra_config: 
+      path: ${filePath.base}terraform/
+      inventory_infofile: Terraform.tfstate
+    sw_config:
+      path: ${filePath.base}ansible/
+
   
 # dev 프로파일
 ---
