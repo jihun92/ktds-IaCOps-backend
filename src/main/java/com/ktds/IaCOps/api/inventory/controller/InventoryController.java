@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ktds.IaCOps.api.inventory.model.Inventory;
 import com.ktds.IaCOps.api.inventory.service.InventoryService;
-import com.ktds.IaCOps.common.inventory.model.Inventory;
 import com.ktds.IaCOps.common.response.ApiResponse;
 
 @RestController

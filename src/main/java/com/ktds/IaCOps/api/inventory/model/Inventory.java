@@ -1,4 +1,4 @@
-package com.ktds.IaCOps.common.inventory.model;
+package com.ktds.IaCOps.api.inventory.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
