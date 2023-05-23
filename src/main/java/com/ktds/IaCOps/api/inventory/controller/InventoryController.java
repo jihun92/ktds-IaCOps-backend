@@ -26,7 +26,6 @@ public class InventoryController {
 
     @GetMapping("/inventories")
     public ResponseEntity<ApiResponse<List<Inventory>>> getAllInventory() {
-        
         try {
             List<Inventory> inventories = inventoryService.getAllInventory();
             ResponseEntity<ApiResponse<List<Inventory>>> response = new ResponseEntity<>(new ApiResponse<>(HttpStatus.OK.value(), "success", inventories), HttpStatus.OK);

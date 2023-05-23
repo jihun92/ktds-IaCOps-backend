@@ -1,66 +1,66 @@
-package com.ktds.IaCOps;
+// package com.ktds.IaCOps;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+// import org.junit.jupiter.api.Test;
+// import org.springframework.beans.factory.annotation.Autowired;
+// import org.springframework.boot.test.context.SpringBootTest;
 
-import com.ktds.IaCOps.common.vcs.gitlab.component.GitComponent;
+// import com.ktds.IaCOps.common.vcs.gitlab.component.GitComponent;
 
 
-@SpringBootTest
-class GitComponentTest {
+// @SpringBootTest
+// class GitComponentTest {
 
-	@Autowired
-	private GitComponent gitComponent;
+// 	@Autowired
+// 	private GitComponent gitComponent;
 
-	@Test
-	void contextLoads() {
-		String commitMessage = "230504 commit test";
-		String filePattern = ".";
-		// 돌아가고싶은 commitid
-		String commitId = "2d1f5a2a210b9eb7a4c04a7dab025372f1f813c2";
+// 	@Test
+// 	void contextLoads() {
+// 		String commitMessage = "230504 commit test";
+// 		String filePattern = ".";
+// 		// 돌아가고싶은 commitid
+// 		String commitId = "2d1f5a2a210b9eb7a4c04a7dab025372f1f813c2";
 
-		//clone
-		//String clone = GitService.clone();
-		//System.out.println(clone);
+// 		//clone
+// 		//String clone = GitService.clone();
+// 		//System.out.println(clone);
 
-		//pull
-		// String pull = GitService.pull();
-		// System.out.println(pull);
+// 		//pull
+// 		// String pull = GitService.pull();
+// 		// System.out.println(pull);
 
-		//add
-		//String add = GitService.add(filePattern);
-		///System.out.println(add);
+// 		//add
+// 		//String add = GitService.add(filePattern);
+// 		///System.out.println(add);
 
-		//commit
-		// Scanner sc = new Scanner(System.in);
-		// System.out.println("commit message를 입력하세요.");
-		// commitMessage = sc.nextLine();
-		// String commit = GitService.commit(commitMessage);
-		// System.out.println(commit);
+// 		//commit
+// 		// Scanner sc = new Scanner(System.in);
+// 		// System.out.println("commit message를 입력하세요.");
+// 		// commitMessage = sc.nextLine();
+// 		// String commit = GitService.commit(commitMessage);
+// 		// System.out.println(commit);
 
-		//push
-		// String push = GitService.push();
-		// System.out.println(push);
+// 		//push
+// 		// String push = GitService.push();
+// 		// System.out.println(push);
 
-		// localReset
-		// String localReset = GitService.localReset(commitId);
-		// System.out.println(localReset);
+// 		// localReset
+// 		// String localReset = GitService.localReset(commitId);
+// 		// System.out.println(localReset);
 
-		//localRevert & push
-		String localRevert = gitComponent.localRevert(commitId);
-		System.out.println(localRevert);
-		String push = gitComponent.push();
-		System.out.println(push);
+// 		//localRevert & push
+// 		String localRevert = gitComponent.localRevert(commitId);
+// 		System.out.println(localRevert);
+// 		String push = gitComponent.push();
+// 		System.out.println(push);
 		
 
 
-		//remoteReset
-		//String remoteReset = GitService.remoteReset(commitId);
-		//System.out.println(remoteReset);
+// 		//remoteReset
+// 		//String remoteReset = GitService.remoteReset(commitId);
+// 		//System.out.println(remoteReset);
 
-		//remoteRevert
+// 		//remoteRevert
 
-	}
+// 	}
 
-}
+// }

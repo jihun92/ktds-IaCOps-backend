@@ -16,7 +16,7 @@ import org.yaml.snakeyaml.Yaml;
 @Component
 public class YamlComponent {
 
-	public Map<String, Object> readYaml(String filePath, String fileName) {
+	public Map<String, Object> getAllItemsFromYaml(String filePath, String fileName) {
 
 		InputStream inputStream = null;
 
@@ -33,9 +33,9 @@ public class YamlComponent {
 
 	}
 
-	public void writeYaml(String filePath, String fileName, String key, Object value, Map<String, Object> yamlData) {
+	public void addItemToYaml(String filePath, String fileName, String key, Object value, Map<String, Object> yamlData) {
 
-		setValueFromNestedMap(yamlData, value, key.split("\\."));
+		setValueFromMap(yamlData, value, key.split("\\."));
 
 		PrintWriter writer = null;
 	    try {
@@ -50,10 +50,31 @@ public class YamlComponent {
 	    options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
 	    Yaml yaml = new Yaml(options);
 	    yaml.dump(yamlData, writer);
+	
+	}
+
+	public boolean overwriteFromYaml(String filePath, String fileName, Map<String, Object> yamlData) {
+
+		PrintWriter writer = null;
+	    try {
+	        writer = new PrintWriter(new File(filePath + fileName));
+	    } catch (FileNotFoundException e) {
+	        e.printStackTrace();
+	    }
+
+	    DumperOptions options = new DumperOptions();
+	    options.setIndent(2);
+	    options.setPrettyFlow(true);
+	    options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+	    Yaml yaml = new Yaml(options);
+	    yaml.dump(yamlData, writer);
+
+		return true;
+
 	}
 
 	@SuppressWarnings("unchecked")
-	public Object getValueFromNestedMap(Map<String, Object> map, String... keys) {
+	private Object getItemsFromMap(Map<String, Object> map, String... keys) {
 	    Object value = map;
 	    for (String key : keys) {
 	        if (!(value instanceof Map)) {
@@ -65,7 +86,7 @@ public class YamlComponent {
 	}
 
 	@SuppressWarnings("unchecked")
-	public Map<String, Object> setValueFromNestedMap(Map<String, Object> map, Object value, String... keys) {
+	private Map<String, Object> setValueFromMap(Map<String, Object> map, Object value, String... keys) {
 	    if (keys.length == 1) {
 	        map.put(keys[0], value);
 	        return null;
@@ -75,7 +96,7 @@ public class YamlComponent {
 	        nestedMap = new HashMap<>();
 	        map.put(keys[0], nestedMap);
 	    }
-	    setValueFromNestedMap(nestedMap, value, Arrays.copyOfRange(keys, 1, keys.length));
+	    setValueFromMap(nestedMap, value, Arrays.copyOfRange(keys, 1, keys.length));
 
 	   return nestedMap;
 

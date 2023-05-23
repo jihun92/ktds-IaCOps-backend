@@ -1,5 +1,6 @@
 package com.ktds.IaCOps.iacengine.ansible.component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ public class AnsibleComponent {
 
 	private String playbookName;
 
-	private List<String> targetHost;
+	private List<String> targetHosts;
 	
 	@Value("${ansible.playbook_path}")
 	private String playbookPath;
@@ -25,17 +26,17 @@ public class AnsibleComponent {
 	CliService cli;
 
 	public List<String> runPlaybook() {
-		String runCommand = "ansible-playbook"+" "+playbookPath+playbookName+" -i "+String.join(" ", this.targetHost);
+		String runCommand = "ansible-playbook"+" "+playbookPath+playbookName+" -i "+String.join(" ", this.targetHosts);
 		return cli.runCommand(runCommand);
 	}
 
 	public List<String> dryRunPlaybook() {
-		String runCommand = "ansible-playbook --check"+" "+playbookPath+playbookName+" -i "+String.join(" ", this.targetHost);
+		String runCommand = "ansible-playbook --check"+" "+playbookPath+playbookName+" -i "+String.join(" ", this.targetHosts);
 		return cli.runCommand(runCommand);
 	}
 
 	public List<String> dryDiffRunPlaybook() {
-		String runCommand = "ansible-playbook --check --diff"+" "+playbookPath+playbookName+" -i "+String.join(" ", this.targetHost);
+		String runCommand = "ansible-playbook --check --diff"+" "+playbookPath+playbookName+" -i "+String.join(" ", this.targetHosts);
 		return cli.runCommand(runCommand);
 	}
 
@@ -43,11 +44,16 @@ public class AnsibleComponent {
 		this.playbookName = playbookName;
 	}
 
-	/**
-	 * @param targetHost
-	 */
-	public void setHost(List<String> targetHost) {
-		this.targetHost = targetHost;
+	public void setHost(List<String> targetHosts) {
+		this.targetHosts = targetHosts;
+	}
+
+	public void setHost(String targetHost) {
+		
+		List<String> targetHosts = new ArrayList<>();
+		targetHosts.add(targetHost);
+		this.targetHosts = targetHosts;
+		
 	}
 
 	public void setHostVars() {
