@@ -37,16 +37,29 @@ filePath:
   
 # dev 프로파일
 ---
-spring:
+pring:
   profiles: dev
-  
-git:
-  url: jdbc:mysql://localhost:3306/devdb
-  username: devuser
-  password: devpass
+
+vcs:
+  gitlab:
+    url: https://gitlab.iacops.site/gitlab-instance-d4e213ae/Monitoring.git
+    username: root  
+    password: new1234!
+    localpath: /Users/seungmi/Desktop/Monitoring
+    strmasterref: refs/remotes/origin/master
 
 ansible:
-  playbook_path: /home/centos/ansible/playbook/
+  playbook_path: /home/centos/iacops-project/
+
+filePath:
+  base: /home/centos/iacops-project/
+  infra_code:
+    infra_config: 
+      path: ${filePath.base}terraform/
+      inventory_infofile: Terraform.tfstate
+    sw_config:
+      path: ${filePath.base}ansible/
+
 
 # prod 프로파일
 ---
