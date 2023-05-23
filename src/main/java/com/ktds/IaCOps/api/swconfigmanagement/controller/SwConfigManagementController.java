@@ -29,7 +29,7 @@ public class SwConfigManagementController {
 
     
     @GetMapping("/sw-config-management/{id}")
-    public ResponseEntity<ApiResponse<Map<String, Object>>> getHostSwConfig(
+    public ResponseEntity<ApiResponse<Map<String, Object>>> getHostSwConfiget(
         @PathVariable String id
     ){
 
@@ -45,15 +45,15 @@ public class SwConfigManagementController {
     }
 
     @PostMapping("/sw-config-management/{id}")
-    public ResponseEntity<ApiResponse<Boolean>> setHostSwConfiget(
+    public ResponseEntity<ApiResponse<Void>> setHostSwConfiget(
         @PathVariable String id,
         @RequestBody Map<String, Object> yamlData
     ){
 
         try {
-            boolean hostSwConfig = swConfigManagementService.setHostSwConfig(id, yamlData);
-            ResponseEntity<ApiResponse<Boolean>> response = new ResponseEntity<>(new ApiResponse<>(HttpStatus.OK.value(), "success", hostSwConfig), HttpStatus.OK);
-            return response;
+            swConfigManagementService.setHostSwConfig(id, yamlData);
+            return new ResponseEntity<>(new ApiResponse<>(HttpStatus.OK.value(), "success", null), HttpStatus.OK);
+            
         } catch (Exception e) {
             logger.info("Error Get All inventories");
             return new ResponseEntity<>(new ApiResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Error", null), HttpStatus.INTERNAL_SERVER_ERROR);
