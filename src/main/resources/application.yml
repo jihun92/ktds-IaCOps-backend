@@ -37,7 +37,7 @@ filePath:
   
 # dev 프로파일
 ---
-pring:
+spring:
   profiles: dev
 
 vcs:
