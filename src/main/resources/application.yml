@@ -16,17 +16,17 @@ spring:
 
 vcs:
   gitlab:
-    url: https://gitlab.iacops.site/gitlab-instance-d4e213ae/Monitoring.git
+    url: https://gitlab.iacops.site/gitlab-instance-d4e213ae/iacops-project.git
     username: root  
     password: new1234!
-    localpath: /Users/seungmi/Desktop/Monitoring
+    localpath: /Users/kimjihun/Documents/git/iacops-project/
     strmasterref: refs/remotes/origin/master
 
 ansible:
   playbook_path: /Users/kimjihun/Documents/ansible/playbook/
 
 filePath:
-  base: /Users/kimjihun/Documents/git/iacops-project-main/
+  base: /Users/kimjihun/Documents/git/iacops-project/
   infra_code:
     infra_config: 
       path: ${filePath.base}terraform/
@@ -52,7 +52,7 @@ ansible:
   playbook_path: /home/centos/iacops-project/
 
 filePath:
-  base: /home/centos/iacops-project/
+  base: /var/lib/iacops/demoproject/
   infra_code:
     infra_config: 
       path: ${filePath.base}terraform/
