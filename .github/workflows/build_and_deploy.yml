@@ -17,6 +17,12 @@ jobs:
           distribution: 'adopt'
       - name: Build with Maven
         run: mvn -B package --file pom.xml
+      - name: SSH Connection Test
+        run: |
+         echo "${{ secrets.SSH_PRIVATE_KEY }}" > id_rsa.pem
+         chmod 600 id_rsa.pem
+         ssh -v -o StrictHostKeyChecking=no -i id_rsa.pem -T ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_SERVER }}
+         rm id_rsa.pem
       - name: Deploy and Run
         run: |
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > id_rsa.pem
