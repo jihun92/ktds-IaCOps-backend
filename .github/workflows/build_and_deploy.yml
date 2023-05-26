@@ -19,9 +19,9 @@ jobs:
         run: mvn -B package --file pom.xml
       - name: Deploy and Run
         run: |
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > id_rsa
-          chmod 600 id_rsa
-          scp -o StrictHostKeyChecking=no -i id_rsa -r ./target/*.jar ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_SERVER }}:${{ secrets.DEPLOY_DIR }}/app.jar
-          ssh -o StrictHostKeyChecking=no -i id_rsa ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_SERVER }} "pkill -f 'java -jar' || true"
-          ssh -o StrictHostKeyChecking=no -i id_rsa ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_SERVER }} "nohup java -jar -Dspring.profiles.active=dev ${{ secrets.DEPLOY_DIR }}/app.jar &"
-          rm id_rsa
+         echo "${{ secrets.SSH_PRIVATE_KEY }}" > id_rsa.pem
+         chmod 600 id_rsa.pem
+         scp -o StrictHostKeyChecking=no -i id_rsa.pem -r ./target/*.jar ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_SERVER }}:${{ secrets.DEPLOY_DIR }}/app.jar
+         ssh -o StrictHostKeyChecking=no -i id_rsa.pem ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_SERVER }} "pkill -f 'java -jar' || true"
+         ssh -o StrictHostKeyChecking=no -i id_rsa.pem ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_SERVER }} "nohup java -jar -Dspring.profiles.active=dev ${{ secrets.DEPLOY_DIR }}/app.jar &"
+         rm id_rsa.pem
