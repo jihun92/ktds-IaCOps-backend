@@ -12,7 +12,9 @@ spring:
 # local 프로파일
 ---
 spring:
-  profiles: local
+  config:
+    activate:
+      on-profile: local
 
 vcs:
   gitlab:
@@ -38,35 +40,26 @@ filePath:
 # dev 프로파일
 ---
 spring:
-  profiles: dev
+  config:
+    activate:
+      on-profile: dev
 
 vcs:
   gitlab:
     url: https://gitlab.iacops.site/gitlab-instance-d4e213ae/Monitoring.git
     username: root  
     password: new1234!
-    localpath: /Users/seungmi/Desktop/Monitoring
+    localpath: /var/lib/iacops/iacops-project/
     strmasterref: refs/remotes/origin/master
 
 ansible:
   playbook_path: /home/centos/iacops-project/
 
 filePath:
-  base: /var/lib/iacops/demoproject/
+  base: /var/lib/iacops/iacops-project/
   infra_code:
     infra_config: 
       path: ${filePath.base}terraform/
       inventory_infofile: Terraform.tfstate
     sw_config:
       path: ${filePath.base}ansible/
-
-
-# prod 프로파일
----
-spring:
-  profiles: prod
-  
-git:
-  url: jdbc:mysql://localhost:3306/proddb
-  username: produser
-  password: prodpass
