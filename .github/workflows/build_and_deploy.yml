@@ -24,4 +24,5 @@ jobs:
           scp -o StrictHostKeyChecking=no -i id_rsa.pem -r ./target/*.jar ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_SERVER }}:${{ secrets.DEPLOY_DIR }}/app.jar
           ssh -o StrictHostKeyChecking=no -i id_rsa.pem ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_SERVER }} "pkill -f 'java -jar' || true"
           ssh -o StrictHostKeyChecking=no -i id_rsa.pem ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_SERVER }} "nohup java -jar -Dspring.profiles.active=dev ${{ secrets.DEPLOY_DIR }}/app.jar > ${{ secrets.DEPLOY_DIR }}/app.log 2>&1 &"
+          ssh -o StrictHostKeyChecking=no -i id_rsa.pem ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_SERVER }} "pgrep -fl 'java -jar'"
           rm id_rsa.pem
