@@ -19,14 +19,14 @@ vcs:
     url: https://gitlab.iacops.site/gitlab-instance-d4e213ae/Monitoring.git
     username: root  
     password: new1234!
-    localpath: /Users/seungmi/Desktop/Monitoring
+    localpath: /Users/seungmi/project/iacops-project/
     strmasterref: refs/remotes/origin/master
 
 ansible:
   playbook_path: /Users/kimjihun/Documents/ansible/playbook/
 
 filePath:
-  base: /Users/kimjihun/Documents/git/iacops-project-main/
+  base: /Users/seungmi/project/iacops-project/
   infra_code:
     infra_config: 
       path: ${filePath.base}terraform/
