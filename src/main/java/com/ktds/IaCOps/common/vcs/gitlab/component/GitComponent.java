@@ -120,7 +120,6 @@ public class GitComponent {
 
             // Return the list of committed changes
             RevCommit[] commits = new RevWalk(repo).parseCommit(repo.resolve("HEAD")).getParents();
-			System.out.println("commitsssssssss" + commits);
 			result = "Succeed to commit changes to the local repository." + commits.toString() + commitMessage;
             return result;
         } catch (IOException | GitAPIException e) {
