@@ -29,5 +29,5 @@ jobs:
           echo "test" > test.txt            
           chmod 600 id_rsa.pem
           scp -v -o StrictHostKeyChecking=no -i id_rsa.pem -r ./target/*.jar ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_SERVER }}:${{ secrets.DEPLOY_DIR }}/app.jar
-          ssh -v -o StrictHostKeyChecking=no -i id_rsa.pem ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_SERVER }} "pkill -f 'java -jar' || true"
+          ssh -v -o StrictHostKeyChecking=no -i id_rsa.pem ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_SERVER }} "pkill -f "java -jar"
           ssh -v -o StrictHostKeyChecking=no -i id_rsa.pem ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_SERVER }} "nohup java -jar -Dspring.profiles.active=dev ${{ secrets.DEPLOY_DIR }}/app.jar > ${{ secrets.DEPLOY_DIR }}/app.log 2>&1 &"
