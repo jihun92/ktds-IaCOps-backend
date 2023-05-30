@@ -27,8 +27,13 @@ jobs:
         run: |
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > id_rsa.pem
           chmod 600 id_rsa.pem
-          scp -o StrictHostKeyChecking=no -i id_rsa.pem -r ./target/*.jar ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_SERVER }}:${{ secrets.DEPLOY_DIR }}/app.jar
-          ssh -o StrictHostKeyChecking=no -i id_rsa.pem ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_SERVER }} "pkill -f 'java -jar' || true"
-          ssh -o StrictHostKeyChecking=no -i id_rsa.pem ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_SERVER }} "nohup java -jar -Dspring.profiles.active=dev ${{ secrets.DEPLOY_DIR }}/app.jar > ${{ secrets.DEPLOY_DIR }}/app.log 2>&1 &"
-          ssh -o StrictHostKeyChecking=no -i id_rsa.pem ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_SERVER }} "pgrep -fl 'java -jar'"
+          echo "Starting scp command"
+          scp -v -o StrictHostKeyChecking=no -i id_rsa.pem -r ./target/*.jar ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_SERVER }}:${{ secrets.DEPLOY_DIR }}/app.jar
+          echo "Finished scp command"
+          echo "Executing kill command on remote server"
+          ssh -v -o StrictHostKeyChecking=no -i id_rsa.pem ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_SERVER }} "pkill -f 'java -jar' || true"
+          echo "Starting application on remote server"
+          ssh -v -o StrictHostKeyChecking=no -i id_rsa.pem ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_SERVER }} "nohup java -jar -Dspring.profiles.active=dev ${{ secrets.DEPLOY_DIR }}/app.jar > ${{ secrets.DEPLOY_DIR }}/app.log 2>&1 &"
+          echo "Checking application process on remote server"
+          ssh -v -o StrictHostKeyChecking=no -i id_rsa.pem ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_SERVER }} "pgrep -fl 'java -jar'"
           rm id_rsa.pem
