@@ -23,3 +23,14 @@ jobs:
          chmod 600 id_rsa.pem
          ssh -v -o StrictHostKeyChecking=no -i id_rsa.pem -T ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_SERVER }}
          rm id_rsa.pem
+      - name: Deploy and Run
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.DEPLOY_SERVER }}
+          username: ${{ secrets.DEPLOY_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            echo "${{ secrets.SSH_PRIVATE_KEY }}" > id_rsa.pem
+            echo "test" > test.txt            
+            chmod 600 id_rsa.pem
+            scp -o StrictHostKeyChecking=no -i id_rsa.pem -r ./test.txt .:${{ secrets.DEPLOY_DIR }}/test.txt
