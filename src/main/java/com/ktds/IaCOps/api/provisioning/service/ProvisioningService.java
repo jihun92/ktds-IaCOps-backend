@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import com.ktds.IaCOps.api.inventory.model.Inventory;
 import com.ktds.IaCOps.api.inventory.service.InventoryService;
 import com.ktds.IaCOps.common.file.component.FileManagementComponent;
-import com.ktds.IaCOps.iacengine.terraform.TerraformComponent;
+import com.ktds.IaCOps.iacengine.terraform.component.TerraformComponent;
 
 @Service
 public class ProvisioningService {
