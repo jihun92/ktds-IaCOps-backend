@@ -25,4 +25,6 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd ${{ secrets.DEPLOY_DIR }}
+            echo "${{ secrets.SSH_PRIVATE_KEY }}" > id_rsa.pem
+            chmod 600 id_rsa.pem
             scp -o StrictHostKeyChecking=no -i id_rsa.pem -r ./target/*.jar .:${{ secrets.DEPLOY_DIR }}/app.jar
