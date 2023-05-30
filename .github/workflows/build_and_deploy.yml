@@ -25,7 +25,4 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd ${{ secrets.DEPLOY_DIR }}
-            pkill -f 'java -jar' || true
             scp -o StrictHostKeyChecking=no -i id_rsa.pem -r ./target/*.jar .:${{ secrets.DEPLOY_DIR }}/app.jar
-            nohup java -jar -Dspring.profiles.active=dev ${{ secrets.DEPLOY_DIR }}/app.jar > ${{ secrets.DEPLOY_DIR }}/app.log 2>&1 &
-            pgrep -fl 'java -jar'
