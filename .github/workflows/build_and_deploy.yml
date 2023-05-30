@@ -16,7 +16,7 @@ jobs:
           java-version: '8'
           distribution: 'adopt'
       - name: Build with Maven
-        run: mvn -B package --file pom.xm
+        run: mvn -B package --file pom.xml
       - name: SSH Connection Test
         run: |
          echo "${{ secrets.SSH_PRIVATE_KEY }}" > id_rsa.pem
