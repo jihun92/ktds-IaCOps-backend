@@ -60,6 +60,6 @@ filePath:
   infra_code:
     infra_config: 
       path: ${filePath.base}terraform/
-      inventory_infofile: Terraform.tfstate
+      inventory_infofile: terraform.tfstate
     sw_config:
       path: ${filePath.base}ansible/
