@@ -46,7 +46,7 @@ spring:
 
 vcs:
   gitlab:
-    url: https://gitlab.iacops.site/gitlab-instance-d4e213ae/Monitoring.git
+    url: https://gitlab.iacops.site/gitlab-instance-d4e213ae/iacops-project.git
     username: root  
     password: new1234!
     localpath: /var/lib/iacops/iacops-project/

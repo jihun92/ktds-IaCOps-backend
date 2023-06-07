@@ -62,7 +62,7 @@ public class SwConfigManagementController {
 
     }
 
-    @PostMapping("/sw-config-management/{id}/dryrun")
+    @PostMapping("/sw-config-management/dryrun/{id}")
     public ResponseEntity<ApiResponse<Map<String, List<String>>>> dryrun(
         @PathVariable String id
     ){
