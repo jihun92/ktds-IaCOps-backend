@@ -36,7 +36,7 @@ public class AnsibleComponent {
 	}
 
 	public List<String> dryDiffRunPlaybook() {
-		String runCommand = "source .bashrc & ansible-playbook --check --diff"+" "+playbookPath+playbookName+" -i "+String.join(" ", this.targetHosts+",");
+		String runCommand = "sudo ansible-playbook --check --diff"+" "+playbookPath+playbookName+" -i "+String.join(" ", this.targetHosts+",");
 		// return cli.runCommand(runCommand);
 		return cli.runCommand(runCommand);
 	}
