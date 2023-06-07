@@ -21,14 +21,14 @@ vcs:
     url: https://gitlab.iacops.site/gitlab-instance-d4e213ae/iacops-project.git
     username: root  
     password: new1234!
-    localpath: /Users/seungmi/project/iacops-project/
+    localpath: /Users/kimjihun/Documents/git/iacops-project/
     strmasterref: refs/remotes/origin/master
 
 ansible:
-  playbook_path: /Users/kimjihun/Documents/ansible/playbook/
+  playbook_path: /Users/kimjihun/Documents/git/ktds-IaCOps-Ansible/playbook/
 
 filePath:
-  base: /Users/seungmi/project/iacops-project/
+  base: /Users/kimjihun/Documents/git/iacops-project/
   infra_code:
     infra_config: 
       path: ${filePath.base}terraform/
@@ -53,7 +53,7 @@ vcs:
     strmasterref: refs/remotes/origin/master
 
 ansible:
-  playbook_path: /home/centos/iacops-project/
+  playbook_path: /var/lib/iacops/ktds-IaCOps-ansible/playbook/
 
 filePath:
   base: /var/lib/iacops/iacops-project/
