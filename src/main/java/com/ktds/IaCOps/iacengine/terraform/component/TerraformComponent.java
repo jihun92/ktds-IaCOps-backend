@@ -17,12 +17,12 @@ public class TerraformComponent {
 	CliService cli;
 
 	public List<String> plan() {
-		String runCommand = "sudo terraform -chdir=/var/lib/iacops/iacops-project/terraform/ plan";
+		String runCommand = "sudo terraform -chdir=/var/lib/iacops/iacops-project/terraform/ plan -auto-approve";
 		return cli.runCommand(runCommand);
 	}
 
     public List<String> apply() {
-		String runCommand = "sudo terraform -chdir=/var/lib/iacops/iacops-project/terraform/ apply";
+		String runCommand = "sudo terraform -chdir=/var/lib/iacops/iacops-project/terraform/ apply -auto-approve";
 		return cli.runCommand(runCommand);
 	}
 
