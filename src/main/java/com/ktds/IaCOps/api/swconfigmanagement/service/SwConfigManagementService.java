@@ -1,9 +1,12 @@
 package com.ktds.IaCOps.api.swconfigmanagement.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -14,6 +17,8 @@ import com.ktds.IaCOps.iacengine.ansible.component.AnsibleComponent;
 
 @Service
 public class SwConfigManagementService {
+
+    private static final Logger logger = LoggerFactory.getLogger(SwConfigManagementService.class);
 
     @Autowired
     AnsibleComponent ansibleComponent;
@@ -27,9 +32,9 @@ public class SwConfigManagementService {
     @Value("${filePath.infra_code.sw_config.path}")
     private String sw_config_path;
 
-    public List<String> DryRun(String hostip) {
+    public Map<String, List<String>> dryRun(String id) {
 
-        List<String> result = new ArrayList<>();
+        Map<String, List<String>> result = new HashMap<>();
 
         /*
          * VCS을 어떤 걸 사용하고 있는 지
@@ -37,14 +42,41 @@ public class SwConfigManagementService {
          * 데모버전은 gitlab을 사용하므로 gitlab 객체를 이용
          */
 
+        String fileName = id + ".yaml";
+        Map<String, Object> itemMap = yamlComponent.getAllItemsFromYaml(sw_config_path, fileName);
+
         // Target Host 지정
-        ansibleComponent.setHost(hostip);
+        String ip = itemMap.get("ip").toString();
+        ansibleComponent.setHost(ip);
 
         // 수행할 playbook을 찾음
-        ansibleComponent.selectPlaybook(null);
+        Map<String, Object> sw = (Map<String, Object>) itemMap.get("sw");
 
-        // dryDiffRun 수행
-        result = ansibleComponent.dryDiffRunPlaybook();
+        Map<String, Object> db = (Map<String, Object>) sw.get("db");
+        List<String> dbRunPlaybookNames = getRunPlaybookNames(db);
+        for (String pbName : dbRunPlaybookNames) {
+
+            pbName = pbName+".yaml";
+            // 수행할 playbook 지정
+            ansibleComponent.selectPlaybook(pbName);
+            // dryDiffRun 수행
+            List<String> log = ansibleComponent.dryDiffRunPlaybook();
+            result.put(pbName, log);
+        }
+        
+        Map<String, Object> mw = (Map<String, Object>) sw.get("mw");
+        List<String> mwRunPlaybookNames = getRunPlaybookNames(mw);
+        for (String pbName : mwRunPlaybookNames) {
+
+            pbName = pbName+".yaml";
+            
+            // 수행할 playbook 지정
+            ansibleComponent.selectPlaybook(pbName);
+            // dryDiffRun 수행
+            List<String> log = ansibleComponent.dryDiffRunPlaybook();
+            result.put(pbName, log);
+        }
+
 
         return result;
     }
@@ -78,6 +110,23 @@ public class SwConfigManagementService {
         } catch (Exception e) {
             return result;
         }
+    }
+
+    private List<String> getRunPlaybookNames(Map<String, Object> services) {
+        List<String> runPlaybookNames = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : services.entrySet()) {
+            StringBuilder runPlaybookName = new StringBuilder();
+            runPlaybookName.append(entry.getKey()); // 서비스 이름 출력 ("nginx", "apache", ...)
+            Map<String, Object> serviceConfig = (Map<String, Object>) entry.getValue();
+            runPlaybookName.append("_");
+            runPlaybookName.append(serviceConfig.get("version"));
+            runPlaybookName.append("_");
+            runPlaybookName.append(serviceConfig.get("state"));
+            runPlaybookName.append("_");
+            runPlaybookName.append(serviceConfig.get("install"));
+            runPlaybookNames.add(runPlaybookName.toString());
+        }
+        return runPlaybookNames;
     }
 
 }

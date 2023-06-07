@@ -74,7 +74,7 @@ public class YamlComponent {
 	}
 
 	@SuppressWarnings("unchecked")
-	private Object getItemsFromMap(Map<String, Object> map, String... keys) {
+	public Object getItemsFromMap(Map<String, Object> map, String... keys) {
 	    Object value = map;
 	    for (String key : keys) {
 	        if (!(value instanceof Map)) {
@@ -100,6 +100,9 @@ public class YamlComponent {
 
 	   return nestedMap;
 
+	}
+
+	public void ggetAllItemsFromYaml(String sw_config_path) {
 	}
 
 }

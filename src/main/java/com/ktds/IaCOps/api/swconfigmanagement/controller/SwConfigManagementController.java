@@ -1,5 +1,6 @@
 package com.ktds.IaCOps.api.swconfigmanagement.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -29,7 +30,7 @@ public class SwConfigManagementController {
 
     
     @GetMapping("/sw-config-management/{id}")
-    public ResponseEntity<ApiResponse<Map<String, Object>>> getHostSwConfiget(
+    public ResponseEntity<ApiResponse<Map<String, Object>>> getHostSwConfig(
         @PathVariable String id
     ){
 
@@ -45,7 +46,7 @@ public class SwConfigManagementController {
     }
 
     @PostMapping("/sw-config-management/{id}")
-    public ResponseEntity<ApiResponse<Void>> setHostSwConfiget(
+    public ResponseEntity<ApiResponse<Void>> setHostSwConfig(
         @PathVariable String id,
         @RequestBody Map<String, Object> yamlData
     ){
@@ -53,6 +54,22 @@ public class SwConfigManagementController {
         try {
             swConfigManagementService.setHostSwConfig(id, yamlData);
             return new ResponseEntity<>(new ApiResponse<>(HttpStatus.OK.value(), "success", null), HttpStatus.OK);
+            
+        } catch (Exception e) {
+            logger.info("Error Get All inventories");
+            return new ResponseEntity<>(new ApiResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Error", null), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+    @PostMapping("/sw-config-management/{id}/dryrun")
+    public ResponseEntity<ApiResponse<Map<String, List<String>>>> dryrun(
+        @PathVariable String id
+    ){
+
+        try {
+            Map<String, List<String>> result = swConfigManagementService.dryRun(id);
+            return new ResponseEntity<>(new ApiResponse<>(HttpStatus.OK.value(), "success", result), HttpStatus.OK);
             
         } catch (Exception e) {
             logger.info("Error Get All inventories");
