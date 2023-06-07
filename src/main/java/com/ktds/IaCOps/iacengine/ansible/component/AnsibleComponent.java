@@ -26,17 +26,17 @@ public class AnsibleComponent {
 	CliService cli;
 
 	public List<String> runPlaybook() {
-		String runCommand = "ansible-playbook"+" "+playbookPath+playbookName+" -i "+String.join(" ", this.targetHosts+",");
+		String runCommand = "sudo ansible-playbook"+" "+playbookPath+playbookName+" -i "+String.join(" ", this.targetHosts+",");
 		return cli.runCommand(runCommand);
 	}
 
 	public List<String> dryRunPlaybook() {
-		String runCommand = "ansible-playbook --check"+" "+playbookPath+playbookName+" -i "+String.join(" ", this.targetHosts+",");
+		String runCommand = "sudo ansible-playbook --check"+" "+playbookPath+playbookName+" -i "+String.join(" ", this.targetHosts+",");
 		return cli.runCommand(runCommand);
 	}
 
 	public List<String> dryDiffRunPlaybook() {
-		String runCommand = "sudo ansible-playbook --check --diff"+" "+playbookPath+playbookName+" -i "+String.join(" ", this.targetHosts+",");
+		String runCommand = "sudo ansible-playbook");
 		// return cli.runCommand(runCommand);
 		return cli.runCommand(runCommand);
 	}
