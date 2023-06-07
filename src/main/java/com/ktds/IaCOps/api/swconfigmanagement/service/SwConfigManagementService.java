@@ -81,6 +81,55 @@ public class SwConfigManagementService {
         return result;
     }
 
+    public Map<String, List<String>> run(String id) {
+
+        Map<String, List<String>> result = new HashMap<>();
+
+        /*
+         * VCS을 어떤 걸 사용하고 있는 지
+         * 체크 이후 해당 VCS에 맞는 객체를 사용해야 할 수 있음 (gitlab or github)
+         * 데모버전은 gitlab을 사용하므로 gitlab 객체를 이용
+         */
+
+        String fileName = id + ".yaml";
+        Map<String, Object> itemMap = yamlComponent.getAllItemsFromYaml(sw_config_path, fileName);
+
+        // Target Host 지정
+        String ip = itemMap.get("ip").toString();
+        ansibleComponent.setHost(ip);
+
+        // 수행할 playbook을 찾음
+        Map<String, Object> sw = (Map<String, Object>) itemMap.get("sw");
+
+        Map<String, Object> db = (Map<String, Object>) sw.get("db");
+        List<String> dbRunPlaybookNames = getRunPlaybookNames(db);
+        for (String pbName : dbRunPlaybookNames) {
+
+            pbName = pbName+".yaml";
+            // 수행할 playbook 지정
+            ansibleComponent.selectPlaybook(pbName);
+            // dryDiffRun 수행
+            List<String> log = ansibleComponent.runPlaybook();
+            result.put(pbName, log);
+        }
+        
+        Map<String, Object> mw = (Map<String, Object>) sw.get("mw");
+        List<String> mwRunPlaybookNames = getRunPlaybookNames(mw);
+        for (String pbName : mwRunPlaybookNames) {
+
+            pbName = pbName+".yaml";
+            
+            // 수행할 playbook 지정
+            ansibleComponent.selectPlaybook(pbName);
+            // dryDiffRun 수행
+            List<String> log = ansibleComponent.runPlaybook();
+            result.put(pbName, log);
+        }
+
+
+        return result;
+    }
+
     // hostid를 기준으로 sw형상정보 yaml을 관리
     public boolean setSwConfigFile(String hostid) {
         try {

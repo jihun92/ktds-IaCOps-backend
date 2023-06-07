@@ -72,7 +72,23 @@ public class SwConfigManagementController {
             return new ResponseEntity<>(new ApiResponse<>(HttpStatus.OK.value(), "success", result), HttpStatus.OK);
             
         } catch (Exception e) {
-            logger.info("Error Get All inventories");
+            logger.info("Error dryrun");
+            return new ResponseEntity<>(new ApiResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Error", null), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
+
+    @PostMapping("/sw-config-management/run/{id}")
+    public ResponseEntity<ApiResponse<Map<String, List<String>>>> run(
+        @PathVariable String id
+    ){
+
+        try {
+            Map<String, List<String>> result = swConfigManagementService.run(id);
+            return new ResponseEntity<>(new ApiResponse<>(HttpStatus.OK.value(), "success", result), HttpStatus.OK);
+            
+        } catch (Exception e) {
+            logger.info("Error run");
             return new ResponseEntity<>(new ApiResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Error", null), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
