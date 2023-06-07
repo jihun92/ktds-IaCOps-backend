@@ -17,7 +17,7 @@ public class TerraformComponent {
 	CliService cli;
 
 	public List<String> plan() {
-		String runCommand = "sudo terraform -chdir=/var/lib/iacops/iacops-project/terraform/ plan -auto-approve";
+		String runCommand = "sudo terraform -chdir=/var/lib/iacops/iacops-project/terraform/ plan";
 		return cli.runCommand(runCommand);
 	}
 
