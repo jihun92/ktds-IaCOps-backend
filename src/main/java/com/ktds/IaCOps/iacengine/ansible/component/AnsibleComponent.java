@@ -26,35 +26,35 @@ public class AnsibleComponent {
 	CliService cli;
 
 	public List<String> runPlaybook() {
-		String runCommand = "sudo ansible-playbook"+" "+playbookPath+playbookName+" -i "+String.join(" ", this.targetHosts+",");
+		String runCommand = "sudo ansible-playbook"+" "+playbookPath+playbookName+" -i "+String.join(" ", this.targetHosts);
 		return cli.runCommand(runCommand);
 	}
 
 	public List<String> dryRunPlaybook() {
-		String runCommand = "sudo ansible-playbook --check"+" "+playbookPath+playbookName+" -i "+String.join(" ", this.targetHosts+",");
+		String runCommand = "sudo ansible-playbook --check"+" "+playbookPath+playbookName+" -i "+String.join(" ", this.targetHosts);
 		return cli.runCommand(runCommand);
 	}
 
 	public List<String> dryDiffRunPlaybook() {
-		String runCommand = "sudo ansible-playbook --check --diff"+" "+playbookPath+playbookName+" -i "+String.join(" ", this.targetHosts+",");
+		String runCommand = "sudo ansible-playbook --check --diff"+" "+playbookPath+playbookName+" -i "+String.join(" ", this.targetHosts);
 		return cli.runCommand(runCommand);
 	}
 
 	public List<String> runPlaybook(String extraVars) {
 		String extraVarsOption = " --extra-vars " + extraVars;
-		String runCommand = "sudo ansible-playbook"+" "+playbookPath+playbookName+" -i "+String.join(" ", this.targetHosts+","+extraVarsOption);
+		String runCommand = "sudo ansible-playbook"+" "+playbookPath+playbookName+" -i "+String.join(" ", this.targetHosts)+extraVarsOption;
 		return cli.runCommand(runCommand);
 	}
 
 	public List<String> dryRunPlaybook(String extraVars) {
 		String extraVarsOption = " --extra-vars " + extraVars;
-		String runCommand = "sudo ansible-playbook --check"+" "+playbookPath+playbookName+" -i "+String.join(" ", this.targetHosts+","+extraVarsOption);
+		String runCommand = "sudo ansible-playbook --check"+" "+playbookPath+playbookName+" -i "+String.join(" ", this.targetHosts)+extraVarsOption;
 		return cli.runCommand(runCommand);
 	}
 
 	public List<String> dryDiffRunPlaybook(String extraVars) {
 		String extraVarsOption = " --extra-vars " + extraVars;
-		String runCommand = "sudo ansible-playbook --check --diff"+" "+playbookPath+playbookName+" -i "+String.join(" ", this.targetHosts+",")+extraVarsOption;
+		String runCommand = "sudo ansible-playbook --check --diff"+" "+playbookPath+playbookName+" -i "+String.join(" ", this.targetHosts)+extraVarsOption;
 		return cli.runCommand(runCommand);
 	}
 
