@@ -18,7 +18,7 @@ public class AnsibleComponent {
 	private String playbookName;
 
 	private List<String> targetHosts;
-	
+
 	@Value("${ansible.playbook_path}")
 	private String playbookPath;
 
@@ -40,6 +40,25 @@ public class AnsibleComponent {
 		return cli.runCommand(runCommand);
 	}
 
+	public List<String> runPlaybook(String extraVars) {
+		String extraVarsOption = " --extra-vars " + extraVars;
+		String runCommand = "sudo ansible-playbook"+" "+playbookPath+playbookName+" -i "+String.join(" ", this.targetHosts+","+extraVarsOption);
+		return cli.runCommand(runCommand);
+	}
+
+	public List<String> dryRunPlaybook(String extraVars) {
+		String extraVarsOption = " --extra-vars " + extraVars;
+		String runCommand = "sudo ansible-playbook --check"+" "+playbookPath+playbookName+" -i "+String.join(" ", this.targetHosts+","+extraVarsOption);
+		return cli.runCommand(runCommand);
+	}
+
+	public List<String> dryDiffRunPlaybook(String extraVars) {
+		String extraVarsOption = " --extra-vars " + extraVars;
+		String runCommand = "sudo ansible-playbook --check --diff"+" "+playbookPath+playbookName+" -i "+String.join(" ", this.targetHosts+",")+extraVarsOption;
+		return cli.runCommand(runCommand);
+	}
+
+
 	public void selectPlaybook(String playbookName) {
 		this.playbookName = playbookName;
 	}
@@ -60,9 +79,9 @@ public class AnsibleComponent {
 
 	}
 
-	public void selectExtraVars() {
-
-	}
+	// public void selectExtraVars(String extraVars) {
+		
+	// }
 
 	public void setAnsibleConfig() {
 
