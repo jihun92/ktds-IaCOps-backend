@@ -57,30 +57,30 @@ public class SwConfigManagementService {
         /*
          * sw 
          */
-        // Map<String, Object> db = (Map<String, Object>) sw.get("db");
-        // List<String> dbRunPlaybookNames = getRunPlaybookNames(db);
-        // for (String pbName : dbRunPlaybookNames) {
+        Map<String, Object> db = (Map<String, Object>) sw.get("db");
+        List<String> dbRunPlaybookNames = getRunPlaybookNames(db);
+        for (String pbName : dbRunPlaybookNames) {
 
-        //     pbName = pbName+".yaml";
-        //     // 수행할 playbook 지정
-        //     ansibleComponent.selectPlaybook(pbName);
-        //     // dryDiffRun 수행
-        //     List<String> log = ansibleComponent.dryDiffRunPlaybook();
-        //     result.put(pbName, log);
-        // }
+            pbName = pbName+".yaml";
+            // 수행할 playbook 지정
+            ansibleComponent.selectPlaybook(pbName);
+            // dryDiffRun 수행
+            List<String> log = ansibleComponent.dryDiffRunPlaybook();
+            result.put(pbName, log);
+        }
         
-        // Map<String, Object> mw = (Map<String, Object>) sw.get("mw");
-        // List<String> mwRunPlaybookNames = getRunPlaybookNames(mw);
-        // for (String pbName : mwRunPlaybookNames) {
+        Map<String, Object> mw = (Map<String, Object>) sw.get("mw");
+        List<String> mwRunPlaybookNames = getRunPlaybookNames(mw);
+        for (String pbName : mwRunPlaybookNames) {
 
-        //     pbName = pbName+".yaml";
+            pbName = pbName+".yaml";
             
-        //     // 수행할 playbook 지정
-        //     ansibleComponent.selectPlaybook(pbName);
-        //     // dryDiffRun 수행
-        //     List<String> log = ansibleComponent.dryDiffRunPlaybook();
-        //     result.put(pbName, log);
-        // }
+            // 수행할 playbook 지정
+            ansibleComponent.selectPlaybook(pbName);
+            // dryDiffRun 수행
+            List<String> log = ansibleComponent.dryDiffRunPlaybook();
+            result.put(pbName, log);
+        }
 
         /*
          * os 
