@@ -1,55 +1,51 @@
 package com.ktds.IaCOps.common.cli;
 
-import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.exec.CommandLine;
+import org.apache.commons.exec.DefaultExecutor;
+import org.apache.commons.exec.ExecuteException;
+import org.apache.commons.exec.ExecuteWatchdog;
+import org.apache.commons.exec.PumpStreamHandler;
 import org.springframework.stereotype.Service;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class CliService {
 
 	public List<String> runCommand(String command) {
 
-		List<String> output = new ArrayList<>();
+		List<String> outputLines = new ArrayList<>();
 
-		// String escapedCommand = command.replace("\"", "\\\"");
+		CommandLine commandLine = CommandLine.parse(command);
 
+		DefaultExecutor executor = new DefaultExecutor();
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		PumpStreamHandler streamHandler = new PumpStreamHandler(outputStream);
+		executor.setStreamHandler(streamHandler);
+
+		ExecuteWatchdog watchdog = new ExecuteWatchdog(180 * 1000);
+		executor.setWatchdog(watchdog);
 
 		try {
+			int exitValue = executor.execute(commandLine);
+			// Convert output to List<String>:
+			String output = outputStream.toString();
+			outputLines = Arrays.asList(output.split("\\r?\\n"));
 
-			Process process = Runtime.getRuntime().exec(command);
-			BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
-			String line = null;
-
-			while ((line = br.readLine()) != null) {
-				output.add(line);
-			}
-
+		} catch (ExecuteException e) {
+			log.debug(e.toString());
 		} catch (IOException e) {
-			// [] 으로 return 되어 수정 필요
-			return Arrays.asList(e.toString());
+			log.debug(e.toString());
 		}
 
-		return output;
-	}
-
-	public List<String> runCommand(String[] command) throws IOException {
-
-		List<String> output = new ArrayList<>();
-
-		Process process = Runtime.getRuntime().exec(command);
-		BufferedReader br = new BufferedReader(new InputStreamReader(process.getInputStream()));
-		String line = null;
-
-		while ((line = br.readLine()) != null) {
-			output.add(line);
-		}
-
-		return output;
+		return outputLines;
 	}
 
 }

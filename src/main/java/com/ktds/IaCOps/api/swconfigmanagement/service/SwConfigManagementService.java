@@ -98,7 +98,7 @@ public class SwConfigManagementService {
                 for (Map.Entry<String, Object> valueEntry : valueMap.entrySet()) {
                     extraVars = extraVars + valueEntry.getKey() + "=" + valueEntry.getValue() + " ";
                 }
-                List<String> log = ansibleComponent.dryDiffRunPlaybook();
+                List<String> log = ansibleComponent.dryDiffRunPlaybook(extraVars);
                 result.put(pbName, log);
             }
         }
@@ -192,7 +192,7 @@ public class SwConfigManagementService {
                 for (Map.Entry<String, Object> valueEntry : valueMap.entrySet()) {
                     extraVars = extraVars + valueEntry.getKey() + "=" + valueEntry.getValue() + " ";
                 }
-                List<String> log = ansibleComponent.runPlaybook();
+                List<String> log = ansibleComponent.runPlaybook(extraVars);
                 result.put(pbName, log);
             }
         }
