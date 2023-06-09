@@ -17,8 +17,6 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class AnsibleComponent {
 
-	private static final Logger logger = LoggerFactory.getLogger(AnsibleComponent.class);
-	
 	private String playbookName;
 
 	private List<String> targetHosts;
