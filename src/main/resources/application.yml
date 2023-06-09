@@ -25,7 +25,7 @@ vcs:
     strmasterref: refs/remotes/origin/master
 
 ansible:
-  playbook_path: /Users/kimjihun/Documents/git/ktds-IaCOps-Ansible/playbook/
+  playbook_path: /Users/kimjihun/Documents/git/ktds-IaCOps-ansible/playbook/
 
 filePath:
   base: /Users/kimjihun/Documents/git/iacops-project/

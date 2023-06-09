@@ -144,19 +144,27 @@ public class SwConfigManagementService {
 
         // 수행할 playbook을 찾음
         Map<String, Object> sw = (Map<String, Object>) itemMap.get("sw");
+        Map<String, Object> os = (Map<String, Object>) itemMap.get("os");
 
-        Map<String, Object> db = (Map<String, Object>) sw.get("db");
-        List<String> dbRunPlaybookNames = getRunPlaybookNames(db);
-        for (String pbName : dbRunPlaybookNames) {
+        /*
+         * sw 
+         */
+        if (sw.containsKey("db")) {
+            Map<String, Object> db = (Map<String, Object>) sw.get("db");
 
-            pbName = pbName+".yaml";
-            // 수행할 playbook 지정
-            ansibleComponent.selectPlaybook(pbName);
-            // dryDiffRun 수행
-            List<String> log = ansibleComponent.runPlaybook();
-            result.put(pbName, log);
+            List<String> dbRunPlaybookNames = getRunPlaybookNames(db);
+            for (String pbName : dbRunPlaybookNames) {
+    
+                pbName = pbName+".yaml";
+                // 수행할 playbook 지정
+                ansibleComponent.selectPlaybook(pbName);
+                // dryDiffRun 수행
+                List<String> log = ansibleComponent.runPlaybook();
+                result.put(pbName, log);
+            }
         }
         
+        if (sw.containsKey("mw")) {
         Map<String, Object> mw = (Map<String, Object>) sw.get("mw");
         List<String> mwRunPlaybookNames = getRunPlaybookNames(mw);
         for (String pbName : mwRunPlaybookNames) {
@@ -169,7 +177,28 @@ public class SwConfigManagementService {
             List<String> log = ansibleComponent.runPlaybook();
             result.put(pbName, log);
         }
+    }
 
+        /*
+         * os 
+         */
+
+        String extraVars = "";
+         if (os instanceof Map) {
+            for (Map.Entry<String, Object> entry : ((Map<String, Object>)os).entrySet()) {
+                String key = entry.getKey(); 
+                String pbName = key + ".yaml";
+                ansibleComponent.selectPlaybook(pbName);
+                Map<String, Object> valueMap = (Map<String, Object>) entry.getValue();
+    
+                // 플레이북에서 실행할 파라미터 값을 가져온다
+                for (Map.Entry<String, Object> valueEntry : valueMap.entrySet()) {
+                    extraVars = extraVars + valueEntry.getKey() + "=" + valueEntry.getValue() +" ";
+                }
+                List<String> log = ansibleComponent.runPlaybook(extraVars);
+                result.put(pbName, log);
+                        }
+        }
 
         return result;
     }
