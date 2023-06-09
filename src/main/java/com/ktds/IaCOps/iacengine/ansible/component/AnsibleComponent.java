@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.ktds.IaCOps.api.inventory.controller.InventoryController;
 import com.ktds.IaCOps.common.cli.CliService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class AnsibleComponent {
 
-	private static final Logger logger = LoggerFactory.getLogger(InventoryController.class);
+	private static final Logger logger = LoggerFactory.getLogger(AnsibleComponent.class);
 	
 	private String playbookName;
 
