@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -17,8 +15,6 @@ import com.ktds.IaCOps.iacengine.ansible.component.AnsibleComponent;
 
 @Service
 public class SwConfigManagementService {
-
-    private static final Logger logger = LoggerFactory.getLogger(SwConfigManagementService.class);
 
     @Autowired
     AnsibleComponent ansibleComponent;
@@ -54,15 +50,15 @@ public class SwConfigManagementService {
         Map<String, Object> os = (Map<String, Object>) itemMap.get("os");
 
         /*
-         * sw 
+         * sw
          */
         if (sw.containsKey("db")) {
             Map<String, Object> db = (Map<String, Object>) sw.get("db");
 
             List<String> dbRunPlaybookNames = getRunPlaybookNames(db);
             for (String pbName : dbRunPlaybookNames) {
-    
-                pbName = pbName+".yaml";
+
+                pbName = pbName + ".yaml";
                 // 수행할 playbook 지정
                 ansibleComponent.selectPlaybook(pbName);
                 // dryDiffRun 수행
@@ -70,56 +66,57 @@ public class SwConfigManagementService {
                 result.put(pbName, log);
             }
         }
-        
-        if (sw.containsKey("mw")) {
-        Map<String, Object> mw = (Map<String, Object>) sw.get("mw");
-        List<String> mwRunPlaybookNames = getRunPlaybookNames(mw);
-        for (String pbName : mwRunPlaybookNames) {
 
-            pbName = pbName+".yaml";
-            
-            // 수행할 playbook 지정
-            ansibleComponent.selectPlaybook(pbName);
-            // dryDiffRun 수행
-            List<String> log = ansibleComponent.dryDiffRunPlaybook();
-            result.put(pbName, log);
+        if (sw.containsKey("mw")) {
+            Map<String, Object> mw = (Map<String, Object>) sw.get("mw");
+            List<String> mwRunPlaybookNames = getRunPlaybookNames(mw);
+            for (String pbName : mwRunPlaybookNames) {
+
+                pbName = pbName + ".yaml";
+
+                // 수행할 playbook 지정
+                ansibleComponent.selectPlaybook(pbName);
+                // dryDiffRun 수행
+                List<String> log = ansibleComponent.dryDiffRunPlaybook();
+                result.put(pbName, log);
+            }
         }
-    }
 
         /*
-         * os 
+         * os
          */
 
         String extraVars = "";
-         if (os instanceof Map) {
-            for (Map.Entry<String, Object> entry : ((Map<String, Object>)os).entrySet()) {
-                String key = entry.getKey(); 
+        if (os instanceof Map) {
+            for (Map.Entry<String, Object> entry : ((Map<String, Object>) os).entrySet()) {
+                String key = entry.getKey();
                 String pbName = key + ".yaml";
                 ansibleComponent.selectPlaybook(pbName);
                 Map<String, Object> valueMap = (Map<String, Object>) entry.getValue();
-    
+
                 // 플레이북에서 실행할 파라미터 값을 가져온다
                 for (Map.Entry<String, Object> valueEntry : valueMap.entrySet()) {
-                    extraVars = extraVars + valueEntry.getKey() + "=" + valueEntry.getValue() +" ";
+                    extraVars = extraVars + valueEntry.getKey() + "=" + valueEntry.getValue() + " ";
                 }
-                List<String> log = ansibleComponent.dryDiffRunPlaybook(extraVars);
+                List<String> log = ansibleComponent.dryDiffRunPlaybook();
                 result.put(pbName, log);
-                        }
+            }
         }
 
         // for (Map.Entry<String, Object> entry : os.entrySet()) {
-        //     String key = entry.getKey(); 
-        //     String pbName = key + ".yaml";
-        //     ansibleComponent.selectPlaybook(pbName);
-        //     Map<String, Object> valueMap = (Map<String, Object>) entry.getValue();
+        // String key = entry.getKey();
+        // String pbName = key + ".yaml";
+        // ansibleComponent.selectPlaybook(pbName);
+        // Map<String, Object> valueMap = (Map<String, Object>) entry.getValue();
 
-        //     // 플레이북에서 실행할 파라미터 값을 가져온다
-        //     for (Map.Entry<String, Object> valueEntry : valueMap.entrySet()) {
-        //         extraVars = extraVars + valueEntry.getKey() + "=" + valueEntry.getValue() +" ";
-        //     }
-        //     List<String> log = ansibleComponent.dryDiffRunPlaybook(extraVars);
-        //     result.put(pbName, log);
-        
+        // // 플레이북에서 실행할 파라미터 값을 가져온다
+        // for (Map.Entry<String, Object> valueEntry : valueMap.entrySet()) {
+        // extraVars = extraVars + valueEntry.getKey() + "=" + valueEntry.getValue() +"
+        // ";
+        // }
+        // List<String> log = ansibleComponent.dryDiffRunPlaybook(extraVars);
+        // result.put(pbName, log);
+
         // }
 
         return result;
@@ -147,15 +144,15 @@ public class SwConfigManagementService {
         Map<String, Object> os = (Map<String, Object>) itemMap.get("os");
 
         /*
-         * sw 
+         * sw
          */
         if (sw.containsKey("db")) {
             Map<String, Object> db = (Map<String, Object>) sw.get("db");
 
             List<String> dbRunPlaybookNames = getRunPlaybookNames(db);
             for (String pbName : dbRunPlaybookNames) {
-    
-                pbName = pbName+".yaml";
+
+                pbName = pbName + ".yaml";
                 // 수행할 playbook 지정
                 ansibleComponent.selectPlaybook(pbName);
                 // dryDiffRun 수행
@@ -163,41 +160,41 @@ public class SwConfigManagementService {
                 result.put(pbName, log);
             }
         }
-        
-        if (sw.containsKey("mw")) {
-        Map<String, Object> mw = (Map<String, Object>) sw.get("mw");
-        List<String> mwRunPlaybookNames = getRunPlaybookNames(mw);
-        for (String pbName : mwRunPlaybookNames) {
 
-            pbName = pbName+".yaml";
-            
-            // 수행할 playbook 지정
-            ansibleComponent.selectPlaybook(pbName);
-            // dryDiffRun 수행
-            List<String> log = ansibleComponent.runPlaybook();
-            result.put(pbName, log);
+        if (sw.containsKey("mw")) {
+            Map<String, Object> mw = (Map<String, Object>) sw.get("mw");
+            List<String> mwRunPlaybookNames = getRunPlaybookNames(mw);
+            for (String pbName : mwRunPlaybookNames) {
+
+                pbName = pbName + ".yaml";
+
+                // 수행할 playbook 지정
+                ansibleComponent.selectPlaybook(pbName);
+                // dryDiffRun 수행
+                List<String> log = ansibleComponent.runPlaybook();
+                result.put(pbName, log);
+            }
         }
-    }
 
         /*
-         * os 
+         * os
          */
 
         String extraVars = "";
-         if (os instanceof Map) {
-            for (Map.Entry<String, Object> entry : ((Map<String, Object>)os).entrySet()) {
-                String key = entry.getKey(); 
+        if (os instanceof Map) {
+            for (Map.Entry<String, Object> entry : ((Map<String, Object>) os).entrySet()) {
+                String key = entry.getKey();
                 String pbName = key + ".yaml";
                 ansibleComponent.selectPlaybook(pbName);
                 Map<String, Object> valueMap = (Map<String, Object>) entry.getValue();
-    
+
                 // 플레이북에서 실행할 파라미터 값을 가져온다
                 for (Map.Entry<String, Object> valueEntry : valueMap.entrySet()) {
-                    extraVars = extraVars + valueEntry.getKey() + "=" + valueEntry.getValue() +" ";
+                    extraVars = extraVars + valueEntry.getKey() + "=" + valueEntry.getValue() + " ";
                 }
-                List<String> log = ansibleComponent.runPlaybook(extraVars);
+                List<String> log = ansibleComponent.runPlaybook();
                 result.put(pbName, log);
-                        }
+            }
         }
 
         return result;

@@ -16,6 +16,9 @@ public class CliService {
 
 		List<String> output = new ArrayList<>();
 
+		// String escapedCommand = command.replace("\"", "\\\"");
+
+
 		try {
 
 			Process process = Runtime.getRuntime().exec(command);
