@@ -22,10 +22,10 @@ public class InfraManagerController {
     @Autowired
     InfraManagerService infraManagerService;
 
-    @PostMapping("/infra-manager/{ip}")
-    public ResponseEntity<ApiResponse<List<String>>> run(@PathVariable String ip,
-        @RequestBody Map<String, Object> yamlData) {
+    @PostMapping("/infra-manager")
+    public ResponseEntity<ApiResponse<List<String>>> run(@RequestBody Map<String, Object> yamlData) {
         String action = yamlData.get("action").toString();
+        String ip = yamlData.get("ip").toString();
         List<String> log = infraManagerService.run(ip, action);
         return new ResponseEntity<>(new ApiResponse<>(HttpStatus.OK.value(), "success", log), HttpStatus.OK);
 
