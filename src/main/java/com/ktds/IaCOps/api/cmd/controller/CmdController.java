@@ -51,7 +51,7 @@ public class CmdController {
         cmdLine.addArgument("-vvv");
         cmdLine.addArgument("/var/lib/iacops/ktds-IaCOps-ansible/playbook/nginx_latest_running_true.yaml");
         cmdLine.addArgument("-i");
-        cmdLine.addArgument("52.79.111.182,");
+        cmdLine.addArgument("43.201.47.111,");
 
         DefaultExecutor executor = new DefaultExecutor();
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
