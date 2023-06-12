@@ -27,8 +27,21 @@ public class AnsibleComponent {
 
 	public List<String> runPlaybook() {
 		String runCommand = "sudo ansible-playbook "+"-u ansible --private-key=/root/.ssh/id_rsa --ssh-extra-args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' --extra-vars ansible_become_pass=new1234! -vvv  "+playbookPath+playbookName+" -i "+String.join(" ", this.targetHosts)+",";
+
+		
+		List<String> res = new ArrayList<>();
+
+		// 명령 쉘을 생성한다
+		runCommand = "echo "+"\""+runCommand+"\""+" >> cmd.sh";
+
 		log.debug(runCommand);
-		return cli.runCommand(runCommand);
+		res = cli.runCommand(runCommand);
+		log.debug(res.toString());
+		res = cli.runCommand("sudo sh /home/centos/cmd.sh");
+
+		return res;
+
+		
 	}
 
 	public List<String> dryRunPlaybook() {
