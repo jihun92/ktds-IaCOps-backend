@@ -17,10 +17,11 @@ import com.ktds.IaCOps.api.inventory.model.Inventory;
 import com.ktds.IaCOps.common.parsing.json.component.JsonComponent;
 import com.ktds.IaCOps.common.parsing.yaml.component.YamlComponent;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class InventoryService {
-
-    private static final Logger logger = LoggerFactory.getLogger(InventoryController.class);
 
     @Autowired
     YamlComponent yamlComponent;
@@ -41,7 +42,7 @@ public class InventoryService {
             jsonString = jsonComponent.readJsonFile(infraConfigPath + inventoryInfofile);
         } catch (IOException e) {
             // TODO Auto-generated catch block
-            logger.error("Not Read JsonFile: " + infraConfigPath + inventoryInfofile, e.toString(), e);
+            log.debug(e.toString());
             return null;
         }
 

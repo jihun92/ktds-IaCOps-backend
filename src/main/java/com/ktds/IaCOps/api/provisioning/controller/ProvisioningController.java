@@ -14,11 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ktds.IaCOps.api.provisioning.service.ProvisioningService;
 import com.ktds.IaCOps.common.response.ApiResponse;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 @RequestMapping("/api")
 public class ProvisioningController {
-
-    private static final Logger logger = LoggerFactory.getLogger(ProvisioningController.class);
 
     @Autowired
     ProvisioningService provisioningService;

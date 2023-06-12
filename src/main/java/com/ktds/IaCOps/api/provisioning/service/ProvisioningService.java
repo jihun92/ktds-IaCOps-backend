@@ -13,10 +13,11 @@ import com.ktds.IaCOps.api.inventory.service.InventoryService;
 import com.ktds.IaCOps.common.file.component.FileManagementComponent;
 import com.ktds.IaCOps.iacengine.terraform.component.TerraformComponent;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class ProvisioningService {
-
-    private static final Logger logger = LoggerFactory.getLogger(ProvisioningService.class);
 
     @Autowired
     TerraformComponent terraformComponent;
@@ -45,9 +46,9 @@ public class ProvisioningService {
         // apply 완료되면 인벤토리별 sw형상관리 파일을 생성
         List<Inventory> inventories = inventoryService.getAllInventory();
         for (Inventory inventory : inventories) {
-            logger.info(sw_config_path);
-            logger.info(inventory.getId());
-            logger.info(sw_config_path+inventory.getId());
+            log.info(sw_config_path);
+            log.info(inventory.getId());
+            log.info(sw_config_path+inventory.getId());
             fileManagementComponent.createFile(sw_config_path + inventory.getId() + ".yaml", "create!!");
         }
 

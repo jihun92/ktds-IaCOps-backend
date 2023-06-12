@@ -19,11 +19,12 @@ import com.ktds.IaCOps.api.inventory.controller.InventoryController;
 import com.ktds.IaCOps.api.swconfigmanagement.service.SwConfigManagementService;
 import com.ktds.IaCOps.common.response.ApiResponse;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 @RequestMapping("/api")
 public class SwConfigManagementController {
-
-    private static final Logger logger = LoggerFactory.getLogger(InventoryController.class);
 
     @Autowired
     SwConfigManagementService swConfigManagementService;
@@ -39,7 +40,7 @@ public class SwConfigManagementController {
             ResponseEntity<ApiResponse<Map<String, Object>>> response = new ResponseEntity<>(new ApiResponse<>(HttpStatus.OK.value(), "success", hostSwConfig), HttpStatus.OK);
             return response;
         } catch (Exception e) {
-            logger.info("Error Get All inventories");
+            log.info("Error Get All inventories");
             return new ResponseEntity<>(new ApiResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Error", null), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -56,7 +57,7 @@ public class SwConfigManagementController {
             return new ResponseEntity<>(new ApiResponse<>(HttpStatus.OK.value(), "success", null), HttpStatus.OK);
             
         } catch (Exception e) {
-            logger.info("Error Get All inventories");
+            log.info("Error Get All inventories");
             return new ResponseEntity<>(new ApiResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Error", null), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -72,7 +73,7 @@ public class SwConfigManagementController {
             return new ResponseEntity<>(new ApiResponse<>(HttpStatus.OK.value(), "success", result), HttpStatus.OK);
             
         } catch (Exception e) {
-            logger.info("Error dryrun");
+            log.info("Error dryrun");
             return new ResponseEntity<>(new ApiResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Error", null), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
@@ -88,7 +89,7 @@ public class SwConfigManagementController {
             return new ResponseEntity<>(new ApiResponse<>(HttpStatus.OK.value(), "success", result), HttpStatus.OK);
             
         } catch (Exception e) {
-            logger.info("Error run");
+            log.info("Error run");
             return new ResponseEntity<>(new ApiResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Error", null), HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
