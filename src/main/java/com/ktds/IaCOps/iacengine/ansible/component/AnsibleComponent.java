@@ -26,40 +26,40 @@ public class AnsibleComponent {
 	CliService cli;
 
 	public List<String> runPlaybook() {
-		String runCommand = "sudo ansible-playbook"+" "+playbookPath+playbookName+" -i "+String.join(" ", this.targetHosts) + " -vvv";
+		String runCommand = "sudo ansible-playbook "+"-u ansible --private-key=/root/.ssh/id_rsa --ssh-extra-args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' -vvv  "+playbookPath+playbookName+" -i "+String.join(" ", this.targetHosts);
 		log.debug(runCommand);
 		return cli.runCommand(runCommand);
 	}
 
 	public List<String> dryRunPlaybook() {
-		String runCommand = "sudo ansible-playbook --check"+" "+playbookPath+playbookName+" -i "+String.join(" ", this.targetHosts)+ " -vvv";
+		String runCommand = "sudo ansible-playbook --check"+"-u ansible --private-key=/root/.ssh/id_rsa --ssh-extra-args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' -vvv  "+playbookPath+playbookName+" -i "+String.join(" ", this.targetHosts);
 		log.debug(runCommand);
 		return cli.runCommand(runCommand);
 	}
 
 	public List<String> dryDiffRunPlaybook() {
-		String runCommand = "sudo ansible-playbook --check --diff"+" "+playbookPath+playbookName+" -i "+String.join(" ", this.targetHosts)+ " -vvv";
+		String runCommand = "sudo ansible-playbook --check --diff"+"-u ansible --private-key=/root/.ssh/id_rsa --ssh-extra-args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' -vvv  "+playbookPath+playbookName+" -i "+String.join(" ", this.targetHosts);
 		log.debug(runCommand);
 		return cli.runCommand(runCommand);
 	}
 
 	public List<String> runPlaybook(String extraVars) {
 		String extraVarsOption = " --extra-vars " + "\""+  extraVars +"\"";
-		String runCommand = "sudo ansible-playbook"+" "+playbookPath+playbookName+" -i "+String.join(" ", this.targetHosts)+extraVarsOption+ " -vvv";
+		String runCommand = "sudo ansible-playbook "+"-u ansible --private-key=/root/.ssh/id_rsa --ssh-extra-args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' -vvv  "+playbookPath+playbookName+" -i "+String.join(" ", this.targetHosts)+extraVarsOption;
 		log.debug(runCommand);
 		return cli.runCommand(runCommand);
 	}
 
 	public List<String> dryRunPlaybook(String extraVars) {
 		String extraVarsOption = " --extra-vars " + "\""+  extraVars +"\"";
-		String runCommand = "sudo ansible-playbook --check"+" "+playbookPath+playbookName+" -i "+String.join(" ", this.targetHosts)+extraVarsOption+ " -vvv";
+		String runCommand = "sudo ansible-playbook --check"+"-u ansible --private-key=/root/.ssh/id_rsa --ssh-extra-args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' -vvv  "+playbookPath+playbookName+" -i "+String.join(" ", this.targetHosts)+extraVarsOption;
 		log.debug(runCommand);
 		return cli.runCommand(runCommand);
 	}
 
 	public List<String> dryDiffRunPlaybook(String extraVars) {
 		String extraVarsOption = " --extra-vars " + "\""+  extraVars +"\"";
-		String runCommand = "sudo ansible-playbook --check --diff"+" "+playbookPath+playbookName+" -i "+String.join(" ", this.targetHosts)+extraVarsOption+ " -vvv";
+		String runCommand = "sudo ansible-playbook --check --diff"+"-u ansible --private-key=/root/.ssh/id_rsa --ssh-extra-args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' -vvv  "+playbookPath+playbookName+" -i "+String.join(" ", this.targetHosts)+extraVarsOption;
 		log.debug(runCommand);
 		return cli.runCommand(runCommand);
 	}
