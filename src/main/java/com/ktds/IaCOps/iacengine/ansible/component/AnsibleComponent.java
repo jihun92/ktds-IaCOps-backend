@@ -96,13 +96,13 @@ public class AnsibleComponent {
 		return outputLines;
 	}
 
-	public List<String> dryRunPlaybook() {
-		String runCommand = "sudo ansible-playbook --check"
-				+ "-u ansible --private-key=/root/.ssh/id_rsa --ssh-extra-args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' --extra-vars ansible_become_pass=new1234! -vvv  "
-				+ playbookPath + playbookName + " -i " + String.join(" ", this.targetHost) + ",";
-		log.debug(runCommand);
-		return cliComponent.runCommand(runCommand);
-	}
+	// public List<String> dryRunPlaybook() {
+	// 	String runCommand = "sudo ansible-playbook --check"
+	// 			+ "-u ansible --private-key=/root/.ssh/id_rsa --ssh-extra-args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' --extra-vars ansible_become_pass=new1234! -vvv  "
+	// 			+ playbookPath + playbookName + " -i " + String.join(" ", this.targetHost) + ",";
+	// 	log.debug(runCommand);
+	// 	return cliComponent.runCommand(runCommand);
+	// }
 
 	public List<String> dryDiffRunPlaybook() {
 		List<String> outputLines = new ArrayList<>();
