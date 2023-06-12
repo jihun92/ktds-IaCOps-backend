@@ -27,7 +27,7 @@ public class AnsibleComponent {
 
 	private String playbookName;
 
-	private String targetHosts;
+	private String targetHost;
 
 	@Value("${ansible.playbook_path}")
 	private String playbookPath;
@@ -51,7 +51,7 @@ public class AnsibleComponent {
 		cmdLine.addArgument("-vvv");
 		cmdLine.addArgument(playbookPath + playbookName);
 		cmdLine.addArgument("-i");
-		cmdLine.addArgument(targetHosts + ",");
+		cmdLine.addArgument(targetHost + ",");
 
 		DefaultExecutor executor = new DefaultExecutor();
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -99,7 +99,7 @@ public class AnsibleComponent {
 	public List<String> dryRunPlaybook() {
 		String runCommand = "sudo ansible-playbook --check"
 				+ "-u ansible --private-key=/root/.ssh/id_rsa --ssh-extra-args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' --extra-vars ansible_become_pass=new1234! -vvv  "
-				+ playbookPath + playbookName + " -i " + String.join(" ", this.targetHosts) + ",";
+				+ playbookPath + playbookName + " -i " + String.join(" ", this.targetHost) + ",";
 		log.debug(runCommand);
 		return cliComponent.runCommand(runCommand);
 	}
@@ -121,7 +121,7 @@ public class AnsibleComponent {
 		cmdLine.addArgument("-vvv");
 		cmdLine.addArgument(playbookPath + playbookName);
 		cmdLine.addArgument("-i");
-		cmdLine.addArgument(targetHosts + ",");
+		cmdLine.addArgument(targetHost + ",");
 
 		DefaultExecutor executor = new DefaultExecutor();
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -172,7 +172,7 @@ public class AnsibleComponent {
 	// String runCommand = "sudo ansible-playbook "+"-u ansible
 	// --private-key=/root/.ssh/id_rsa --ssh-extra-args='-o StrictHostKeyChecking=no
 	// -o UserKnownHostsFile=/dev/null' -vvv "+playbookPath+playbookName+" -i
-	// "+String.join(" ", this.targetHosts)+extraVarsOption;
+	// "+String.join(" ", this.targetHost)+extraVarsOption;
 	// log.debug(runCommand);
 	// return cli.runCommand(runCommand);
 	// }
@@ -182,7 +182,7 @@ public class AnsibleComponent {
 	// String runCommand = "sudo ansible-playbook --check"+"-u ansible
 	// --private-key=/root/.ssh/id_rsa --ssh-extra-args='-o StrictHostKeyChecking=no
 	// -o UserKnownHostsFile=/dev/null' -vvv "+playbookPath+playbookName+" -i
-	// "+String.join(" ", this.targetHosts)+extraVarsOption;
+	// "+String.join(" ", this.targetHost)+extraVarsOption;
 	// log.debug(runCommand);
 	// return cli.runCommand(runCommand);
 	// }
@@ -192,7 +192,7 @@ public class AnsibleComponent {
 	// String runCommand = "sudo ansible-playbook --check --diff"+"-u ansible
 	// --private-key=/root/.ssh/id_rsa --ssh-extra-args='-o StrictHostKeyChecking=no
 	// -o UserKnownHostsFile=/dev/null' -vvv "+playbookPath+playbookName+" -i
-	// "+String.join(" ", this.targetHosts)+extraVarsOption;
+	// "+String.join(" ", this.targetHost)+extraVarsOption;
 	// log.debug(runCommand);
 	// return cli.runCommand(runCommand);
 	// }
@@ -202,7 +202,7 @@ public class AnsibleComponent {
 	}
 
 	public void setHost(String targetHost) {
-		this.targetHosts = targetHost;
+		this.targetHost = targetHost;
 	}
 
 	public void setHostVars() {
