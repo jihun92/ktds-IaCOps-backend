@@ -27,7 +27,7 @@ public class AnsibleComponent {
 
 	private String playbookName;
 
-	private List<String> targetHosts;
+	private String targetHosts;
 
 	@Value("${ansible.playbook_path}")
 	private String playbookPath;
@@ -92,7 +92,7 @@ public class AnsibleComponent {
 				Thread.currentThread().interrupt();
 			}
 		}
-
+		log.debug(outputLines.toString());
 		return outputLines;
 	}
 
@@ -163,6 +163,7 @@ public class AnsibleComponent {
 			}
 		}
 
+		log.debug(outputLines.toString());
 		return outputLines;
 	}
 
@@ -200,16 +201,8 @@ public class AnsibleComponent {
 		this.playbookName = playbookName;
 	}
 
-	public void setHost(List<String> targetHosts) {
-		this.targetHosts = targetHosts;
-	}
-
 	public void setHost(String targetHost) {
-
-		List<String> targetHosts = new ArrayList<>();
-		targetHosts.add(targetHost);
 		this.targetHosts = targetHosts;
-
 	}
 
 	public void setHostVars() {

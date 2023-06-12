@@ -75,6 +75,8 @@ public class CmdController {
             return null;
         }
 
+        log.debug(outputLines.toString());
+
         return outputLines;
 
     }
