@@ -105,11 +105,65 @@ public class AnsibleComponent {
 	}
 
 	public List<String> dryDiffRunPlaybook() {
-		String runCommand = "sudo ansible-playbook --check --diff"
-				+ "-u ansible --private-key=/root/.ssh/id_rsa --ssh-extra-args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' --extra-vars ansible_become_pass=new1234! -vvv  "
-				+ playbookPath + playbookName + " -i " + String.join(" ", this.targetHosts) + ",";
-		log.debug(runCommand);
-		return cliComponent.runCommand(runCommand);
+		List<String> outputLines = new ArrayList<>();
+
+		CommandLine cmdLine = new CommandLine("sudo");
+		cmdLine.addArgument("ansible-playbook");
+		cmdLine.addArgument("--check");
+		cmdLine.addArgument("--diff");
+		cmdLine.addArgument("-u");
+		cmdLine.addArgument("ansible");
+		cmdLine.addArgument("--private-key=/root/.ssh/id_rsa");
+		cmdLine.addArgument("--ssh-extra-args");
+		cmdLine.addArgument("-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null", false);
+		cmdLine.addArgument("--extra-vars");
+		cmdLine.addArgument("ansible_become_pass=new1234!", false);
+		cmdLine.addArgument("-vvv");
+		cmdLine.addArgument(playbookPath + playbookName);
+		cmdLine.addArgument("-i");
+		cmdLine.addArgument(targetHosts + ",");
+
+		DefaultExecutor executor = new DefaultExecutor();
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		PumpStreamHandler streamHandler = new PumpStreamHandler(outputStream);
+		executor.setStreamHandler(streamHandler);
+
+		ExecuteWatchdog watchdog = new ExecuteWatchdog(180 * 1000);
+		executor.setWatchdog(watchdog);
+
+		ExecuteResultHandler resultHandler = new DefaultExecuteResultHandler() {
+			@Override
+			public void onProcessFailed(ExecuteException e) {
+				super.onProcessFailed(e);
+				String output = outputStream.toString();
+				outputLines.addAll(Arrays.asList(output.split("\\r?\\n")));
+				log.debug(e.toString());
+			}
+
+			@Override
+			public void onProcessComplete(int exitValue) {
+				super.onProcessComplete(exitValue);
+				String output = outputStream.toString();
+				outputLines.addAll(Arrays.asList(output.split("\\r?\\n")));
+			}
+		};
+
+		try {
+			executor.execute(cmdLine, resultHandler);
+		} catch (IOException e) {
+			log.debug(e.toString());
+			return null;
+		}
+
+		while (watchdog.isWatching()) {
+			try {
+				Thread.sleep(500); // Pause for a short period before checking again
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+			}
+		}
+
+		return outputLines;
 	}
 
 	// public List<String> runPlaybook(String extraVars) {
