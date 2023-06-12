@@ -41,8 +41,10 @@ public class CliService {
 
 		} catch (ExecuteException e) {
 			log.debug(e.toString());
+			return null;
 		} catch (IOException e) {
 			log.debug(e.toString());
+			return null;
 		}
 
 		return outputLines;
