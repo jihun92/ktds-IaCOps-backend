@@ -26,7 +26,7 @@ public class AnsibleComponent {
 	CliService cli;
 
 	public List<String> runPlaybook() {
-		String runCommand = "sudo ansible-playbook "+"-u ansible --private-key=/root/.ssh/id_rsa --ssh-extra-args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' --extra-vars ansible_become_pass=new1234! -vvv  "+playbookPath+playbookName+" -i "+String.join(" ", this.targetHosts)+",";
+		String runCommand = "sudo /bin/ansible-playbook "+"-u ansible --private-key=/root/.ssh/id_rsa --ssh-extra-args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' --extra-vars ansible_become_pass=new1234! -vvv  "+playbookPath+playbookName+" -i "+String.join(" ", this.targetHosts)+",";
 
 		
 		List<String> res = new ArrayList<>();
@@ -34,9 +34,9 @@ public class AnsibleComponent {
 		// 명령 쉘을 생성한다
 		runCommand = "echo "+"\""+runCommand+"\""+" > cmd.sh";
 
-		log.debug(runCommand);
+		log.debug("Run Command: "+runCommand);
 		res = cli.runCommand(runCommand);
-		log.debug(res.toString());
+		log.debug("Result Run Command: "+res);
 		res = cli.runCommand("sudo sh /home/centos/cmd.sh");
 
 		return res;
