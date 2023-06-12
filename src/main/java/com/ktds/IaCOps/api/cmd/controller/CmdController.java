@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ktds.IaCOps.common.cli.CliService;
+import com.ktds.IaCOps.common.cli.CliComponent;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 public class CmdController {
 
     @Autowired
-    CliService cliService;
+    CliComponent cliComponent;
 
     // @PostMapping
     // public List<String> runCmd(@RequestBody Map<String, Object> yamlData) {

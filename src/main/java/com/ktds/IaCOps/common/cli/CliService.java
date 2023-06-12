@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-public class CliService {
+public class CliComponent {
 
 	public List<String> runCommand(String command) {
 

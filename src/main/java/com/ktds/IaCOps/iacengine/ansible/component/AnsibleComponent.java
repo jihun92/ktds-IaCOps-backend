@@ -1,13 +1,21 @@
 package com.ktds.IaCOps.iacengine.ansible.component;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.exec.CommandLine;
+import org.apache.commons.exec.DefaultExecutor;
+import org.apache.commons.exec.ExecuteException;
+import org.apache.commons.exec.ExecuteWatchdog;
+import org.apache.commons.exec.PumpStreamHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import com.ktds.IaCOps.common.cli.CliService;
+import com.ktds.IaCOps.common.cli.CliComponent;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,37 +31,62 @@ public class AnsibleComponent {
 	private String playbookPath;
 
 	@Autowired
-	CliService cli;
+	CliComponent cliComponent;
 
 	public List<String> runPlaybook() {
-		String runCommand = "sudo /bin/ansible-playbook "+"-u ansible --private-key=/root/.ssh/id_rsa --ssh-extra-args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' --extra-vars ansible_become_pass=new1234! -vvv  "+playbookPath+playbookName+" -i "+String.join(" ", this.targetHosts)+",";
 
-		
-		List<String> res = new ArrayList<>();
+		List<String> outputLines = new ArrayList<>();
 
-		// 명령 쉘을 생성한다
-		runCommand = "echo "+"\""+runCommand+"\""+" > /home/centos/cmd.sh";
+        CommandLine cmdLine = new CommandLine("sudo");
+        cmdLine.addArgument("ansible-playbook");
+        cmdLine.addArgument("-u");
+        cmdLine.addArgument("ansible");
+        cmdLine.addArgument("--private-key=/root/.ssh/id_rsa");
+        cmdLine.addArgument("--ssh-extra-args");
+        cmdLine.addArgument("-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null", false);
+        cmdLine.addArgument("--extra-vars");
+        cmdLine.addArgument("ansible_become_pass=new1234!", false);
+        cmdLine.addArgument("-vvv");
+        cmdLine.addArgument(playbookPath+playbookName);
+        cmdLine.addArgument("-i");
+        cmdLine.addArgument(targetHosts+",");
 
-		log.debug("Run Command: "+runCommand);
-		res = cli.runCommand(runCommand);
-		log.debug("Result Run Command: "+res);
-		res = cli.runCommand("sudo sh /home/centos/cmd.sh");
+        DefaultExecutor executor = new DefaultExecutor();
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        PumpStreamHandler streamHandler = new PumpStreamHandler(outputStream);
+        executor.setStreamHandler(streamHandler);
 
-		return res;
+        ExecuteWatchdog watchdog = new ExecuteWatchdog(180 * 1000);
+        executor.setWatchdog(watchdog);
 
+        try {
+            int exitValue = executor.execute(cmdLine);
+            // Convert output to List<String>:
+            String output = outputStream.toString();
+            outputLines = Arrays.asList(output.split("\\r?\\n"));
+
+        } catch (ExecuteException e) {
+            log.debug(e.toString());
+            return null;
+        } catch (IOException e) {
+            log.debug(e.toString());
+            return null;
+        }
+
+		return outputLines;
 		
 	}
 
 	public List<String> dryRunPlaybook() {
 		String runCommand = "sudo ansible-playbook --check"+"-u ansible --private-key=/root/.ssh/id_rsa --ssh-extra-args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' --extra-vars ansible_become_pass=new1234! -vvv  "+playbookPath+playbookName+" -i "+String.join(" ", this.targetHosts)+",";
 		log.debug(runCommand);
-		return cli.runCommand(runCommand);
+		return cliComponent.runCommand(runCommand);
 	}
 
 	public List<String> dryDiffRunPlaybook() {
 		String runCommand = "sudo ansible-playbook --check --diff"+"-u ansible --private-key=/root/.ssh/id_rsa --ssh-extra-args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null' --extra-vars ansible_become_pass=new1234! -vvv  "+playbookPath+playbookName+" -i "+String.join(" ", this.targetHosts)+",";
 		log.debug(runCommand);
-		return cli.runCommand(runCommand);
+		return cliComponent.runCommand(runCommand);
 	}
 
 	// public List<String> runPlaybook(String extraVars) {
