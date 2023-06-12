@@ -32,7 +32,7 @@ public class AnsibleComponent {
 		List<String> res = new ArrayList<>();
 
 		// 명령 쉘을 생성한다
-		runCommand = "echo "+"\""+runCommand+"\""+" > cmd.sh";
+		runCommand = "echo "+"\""+runCommand+"\""+" > /home/centos/cmd.sh";
 
 		log.debug("Run Command: "+runCommand);
 		res = cli.runCommand(runCommand);
