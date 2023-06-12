@@ -202,7 +202,7 @@ public class AnsibleComponent {
 	}
 
 	public void setHost(String targetHost) {
-		this.targetHosts = targetHosts;
+		this.targetHosts = targetHost;
 	}
 
 	public void setHostVars() {
