@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.ktds.IaCOps.common.cli.CliService;
+import com.ktds.IaCOps.common.cli.CliComponent;
 
 @Component
 public class TerraformComponent {
@@ -14,7 +14,7 @@ public class TerraformComponent {
 	// private String infra_code_path;
 
 	@Autowired
-	CliService cli;
+	CliComponent cli;
 
 	public List<String> plan() {
 		String runCommand = "sudo terraform -chdir=/var/lib/iacops/iacops-project/terraform/ plan";
