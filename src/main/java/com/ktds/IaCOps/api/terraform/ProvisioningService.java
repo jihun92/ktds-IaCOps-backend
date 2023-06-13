@@ -1,5 +1,6 @@
-package com.ktds.IaCOps.api.provisioning.service;
+package com.ktds.IaCOps.api.terraform;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.ktds.IaCOps.api.inventory.model.Inventory;
 import com.ktds.IaCOps.api.inventory.service.InventoryService;
 import com.ktds.IaCOps.common.file.component.FileManagementComponent;
+import com.ktds.IaCOps.common.parsing.json.component.JsonComponent;
 import com.ktds.IaCOps.iacengine.terraform.component.TerraformComponent;
 
 import lombok.extern.slf4j.Slf4j;
@@ -16,6 +18,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class ProvisioningService {
+
+    @Value("${filePath.infra_code.infra_config.path}")
+    private String infraConfigPath;
+
+    @Value("${filePath.infra_code.sw_config.path}")
+    String swConfigPath;
 
     @Autowired
     TerraformComponent terraformComponent;
@@ -26,8 +34,9 @@ public class ProvisioningService {
     @Autowired
     FileManagementComponent fileManagementComponent;
 
-    @Value("${filePath.infra_code.sw_config.path}")
-    String sw_config_path;
+    @Autowired
+    JsonComponent jsonComponent;
+
 
     public List<String> plan() {
         return terraformComponent.plan();
@@ -44,11 +53,20 @@ public class ProvisioningService {
         // apply 완료되면 인벤토리별 sw형상관리 파일을 생성
         List<Inventory> inventories = inventoryService.getAllInventory();
         for (Inventory inventory : inventories) {
-            log.info(sw_config_path);
+            log.info(swConfigPath);
             log.info(inventory.getId());
-            log.info(sw_config_path+inventory.getId());
-            fileManagementComponent.createFile(sw_config_path + inventory.getId() + ".yaml", "create!!");
+            log.info(swConfigPath+inventory.getId());
+            fileManagementComponent.createFile(swConfigPath + inventory.getId() + ".yaml", "create!!");
         }
 
+    }
+
+    public List<String> getTfStatus() {
+        try {
+            return jsonComponent.readJsonFileToList(infraConfigPath+"terraform.tfstate");
+        } catch (IOException e) {
+            log.debug(e.toString());
+            return null;
+        }
     }
 }
