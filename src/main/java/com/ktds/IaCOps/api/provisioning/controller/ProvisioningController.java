@@ -29,6 +29,7 @@ public class ProvisioningController {
             return new ResponseEntity<>(new ApiResponse<>(HttpStatus.OK.value(), "success", log), HttpStatus.OK);
         } catch (Exception e) {
             // TODO: handle exception
+            log.info(e.toString());
             return new ResponseEntity<>(new ApiResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Error", null),
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -43,6 +44,7 @@ public class ProvisioningController {
             return new ResponseEntity<>(new ApiResponse<>(HttpStatus.OK.value(), "success", log), HttpStatus.OK);
         } catch (Exception e) {
             // TODO: handle exception
+            log.info(e.toString());
             return new ResponseEntity<>(new ApiResponse<>(HttpStatus.INTERNAL_SERVER_ERROR.value(), "Error", null),
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }

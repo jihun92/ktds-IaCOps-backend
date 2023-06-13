@@ -34,7 +34,7 @@ public class CliComponent {
 		executor.setWatchdog(watchdog);
 
 		try {
-			int exitValue = executor.execute(commandLine);
+			executor.execute(commandLine);
 			// Convert output to List<String>:
 			String output = outputStream.toString();
 			outputLines = Arrays.asList(output.split("\\r?\\n"));

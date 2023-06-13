@@ -28,6 +28,7 @@ public class SwConfigManagementService {
     @Value("${filePath.infra_code.sw_config.path}")
     private String sw_config_path;
 
+    @SuppressWarnings("unchecked")
     public Map<String, List<String>> dryRun(String id) {
 
         Map<String, List<String>> result = new HashMap<>();
@@ -122,6 +123,7 @@ public class SwConfigManagementService {
         return result;
     }
 
+    @SuppressWarnings("unchecked")
     public Map<String, List<String>> run(String id) {
 
         Map<String, List<String>> result = new HashMap<>();
@@ -201,14 +203,14 @@ public class SwConfigManagementService {
     }
 
     // hostid를 기준으로 sw형상정보 yaml을 관리
-    public boolean setSwConfigFile(String hostid) {
-        try {
-            Map<String, Object> swConfig = yamlComponent.getAllItemsFromYaml(sw_config_path, hostid);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
+    // public boolean setSwConfigFile(String hostid) {
+    //     try {
+    //         Map<String, Object> swConfig = yamlComponent.getAllItemsFromYaml(sw_config_path, hostid);
+    //         return true;
+    //     } catch (Exception e) {
+    //         return false;
+    //     }
+    // }
 
     // hostid를 기준으로 sw형상정보 yaml을 관리
     public Map<String, Object> getHostSwConfig(String hostid) {
@@ -231,6 +233,7 @@ public class SwConfigManagementService {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private List<String> getRunPlaybookNames(Map<String, Object> services) {
         List<String> runPlaybookNames = new ArrayList<>();
         for (Map.Entry<String, Object> entry : services.entrySet()) {

@@ -62,7 +62,8 @@ public class CmdController {
         executor.setWatchdog(watchdog);
 
         try {
-            int exitValue = executor.execute(cmdLine);
+            // int exitValue = executor.execute(cmdLine);
+            executor.execute(cmdLine);
             // Convert output to List<String>:
             String output = outputStream.toString();
             outputLines = Arrays.asList(output.split("\\r?\\n"));

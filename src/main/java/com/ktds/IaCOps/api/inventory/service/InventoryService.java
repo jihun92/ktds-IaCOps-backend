@@ -6,13 +6,10 @@ import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import com.ktds.IaCOps.api.inventory.controller.InventoryController;
 import com.ktds.IaCOps.api.inventory.model.Inventory;
 import com.ktds.IaCOps.common.parsing.json.component.JsonComponent;
 import com.ktds.IaCOps.common.parsing.yaml.component.YamlComponent;
