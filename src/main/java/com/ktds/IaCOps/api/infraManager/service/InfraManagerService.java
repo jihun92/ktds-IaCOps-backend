@@ -21,6 +21,18 @@ public class InfraManagerService {
         if(action.equals("reboot")){
             pbName = "reboot.yaml";
         }
+        else if(action.equals("l4_mw_root")){
+            pbName = "l4_mw_root.yaml";
+            ansibleComponent.setHost("localhost");
+        }
+        else if(action.equals("db_check")){
+            pbName = "db_check.yaml";
+            ansibleComponent.setHost("localhost");
+        }
+        else if(action.equals("os_mw_root")){
+            pbName = "os_mw_root.yaml";
+        }
+
         ansibleComponent.selectPlaybook(pbName);
         List<String> log = ansibleComponent.runPlaybook();
         return log;
