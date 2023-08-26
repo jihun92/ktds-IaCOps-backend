@@ -32,7 +32,8 @@ public class InfraManagerService {
         }
 
         ansibleComponent.selectPlaybook(pbName);
-        List<String> log = ansibleComponent.runPlaybook();
+        // List<String> log = ansibleComponent.runPlaybook();
+        List<String> log = ansibleComponent.runActionPlaybook();
         return log;
     }
 
