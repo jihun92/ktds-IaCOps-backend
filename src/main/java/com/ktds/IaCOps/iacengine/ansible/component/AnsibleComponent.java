@@ -291,6 +291,67 @@ public class AnsibleComponent {
 		return outputLines;
 	}
 
+	public List<String> runActionPlaybook() {
+
+		List<String> outputLines = new ArrayList<>();
+
+		CommandLine cmdLine = new CommandLine("sudo");
+		cmdLine.addArgument("ansible-playbook");
+		cmdLine.addArgument("-u");
+		cmdLine.addArgument("centos");
+		// cmdLine.addArgument("--private-key=/root/.ssh/id_rsa");
+		// cmdLine.addArgument("--ssh-extra-args");
+		// cmdLine.addArgument("-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null", false);
+		cmdLine.addArgument("--extra-vars");
+		cmdLine.addArgument("ansible_become_pass=new1234!", false);
+		cmdLine.addArgument("-vvv");
+		cmdLine.addArgument(playbookPath + playbookName);
+		cmdLine.addArgument("-i");
+		cmdLine.addArgument(targetHost + ",");
+
+		DefaultExecutor executor = new DefaultExecutor();
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		PumpStreamHandler streamHandler = new PumpStreamHandler(outputStream);
+		executor.setStreamHandler(streamHandler);
+
+		ExecuteWatchdog watchdog = new ExecuteWatchdog(180 * 1000);
+		executor.setWatchdog(watchdog);
+
+		ExecuteResultHandler resultHandler = new DefaultExecuteResultHandler() {
+			@Override
+			public void onProcessFailed(ExecuteException e) {
+				super.onProcessFailed(e);
+				String output = outputStream.toString();
+				outputLines.addAll(Arrays.asList(output.split("\\r?\\n")));
+				log.debug(e.toString());
+			}
+
+			@Override
+			public void onProcessComplete(int exitValue) {
+				super.onProcessComplete(exitValue);
+				String output = outputStream.toString();
+				outputLines.addAll(Arrays.asList(output.split("\\r?\\n")));
+			}
+		};
+
+		try {
+			executor.execute(cmdLine, resultHandler);
+		} catch (IOException e) {
+			log.debug(e.toString());
+			return null;
+		}
+
+		while (watchdog.isWatching()) {
+			try {
+				Thread.sleep(500); // Pause for a short period before checking again
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+			}
+		}
+		log.debug(outputLines.toString());
+		return outputLines;
+	}
+
 	// public List<String> runPlaybook(String extraVars) {
 	// String extraVarsOption = " --extra-vars " + "\""+ extraVars +"\"";
 	// String runCommand = "sudo ansible-playbook "+"-u ansible
