@@ -299,9 +299,9 @@ public class AnsibleComponent {
 		cmdLine.addArgument("ansible-playbook");
 		cmdLine.addArgument("-u");
 		cmdLine.addArgument("centos");
-		// cmdLine.addArgument("--private-key=/root/.ssh/id_rsa");
-		// cmdLine.addArgument("--ssh-extra-args");
-		// cmdLine.addArgument("-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null", false);
+		cmdLine.addArgument("--private-key=/root/.ssh/id_rsa");
+		cmdLine.addArgument("--ssh-extra-args");
+		cmdLine.addArgument("-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null", false);
 		cmdLine.addArgument("--extra-vars");
 		cmdLine.addArgument("ansible_become_pass=new1234!", false);
 		cmdLine.addArgument("-vvv");
