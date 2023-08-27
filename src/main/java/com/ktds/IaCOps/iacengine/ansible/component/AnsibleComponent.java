@@ -298,8 +298,8 @@ public class AnsibleComponent {
 		CommandLine cmdLine = new CommandLine("sudo");
 		cmdLine.addArgument("ansible-playbook");
 		cmdLine.addArgument("-u");
-		cmdLine.addArgument("centos");
-		cmdLine.addArgument("--private-key=/root/.ssh/id_rsa");
+		cmdLine.addArgument("ansible");
+		cmdLine.addArgument("--private-key=/home/ansible/.ssh/id_rsa");
 		cmdLine.addArgument("--ssh-extra-args");
 		cmdLine.addArgument("-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null", false);
 		cmdLine.addArgument("--extra-vars");
